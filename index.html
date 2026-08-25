@@ -1317,44 +1317,59 @@
 
   /* ------------------------------------------------------------------------
      Submenús desplegables (Soluciones, Motorsport): clic en móvil/tablet,
-     hover + clic en escritorio
+     hover + clic en escritorio. Solo uno puede estar abierto a la vez, tanto
+     al hacer clic como al pasar el mouse entre disparadores.
      ------------------------------------------------------------------------ */
   var parents = document.querySelectorAll('.nav-parent');
+  var closeTimer = null;
+
+  function closeAllSubmenus(exceptBtn) {
+    parents.forEach(function (btn) {
+      if (btn === exceptBtn) return;
+      btn.setAttribute('aria-expanded', 'false');
+      document.getElementById(btn.getAttribute('aria-controls')).classList.remove('is-open');
+    });
+  }
+
+  function openSubmenu(btn) {
+    clearTimeout(closeTimer);
+    closeAllSubmenus(btn);
+    btn.setAttribute('aria-expanded', 'true');
+    document.getElementById(btn.getAttribute('aria-controls')).classList.add('is-open');
+  }
+
+  function closeSubmenu(btn) {
+    btn.setAttribute('aria-expanded', 'false');
+    document.getElementById(btn.getAttribute('aria-controls')).classList.remove('is-open');
+  }
 
   parents.forEach(function (btn) {
-    var submenu = document.getElementById(btn.getAttribute('aria-controls'));
-
-    function open() {
-      btn.setAttribute('aria-expanded', 'true');
-      submenu.classList.add('is-open');
-    }
-    function close() {
-      btn.setAttribute('aria-expanded', 'false');
-      submenu.classList.remove('is-open');
-    }
     btn.addEventListener('click', function () {
       var isOpen = btn.getAttribute('aria-expanded') === 'true';
-      parents.forEach(function (other) {
-        if (other !== btn) {
-          other.setAttribute('aria-expanded', 'false');
-          document.getElementById(other.getAttribute('aria-controls')).classList.remove('is-open');
-        }
-      });
-      isOpen ? close() : open();
+      isOpen ? closeSubmenu(btn) : openSubmenu(btn);
     });
 
     var li = btn.closest('li');
-    li.addEventListener('mouseenter', function () { if (desktopQuery.matches) open(); });
-    li.addEventListener('mouseleave', function () { if (desktopQuery.matches) close(); });
+
+    // Pequeño margen antes de cerrar al salir, para tolerar el hueco visual
+    // entre el disparador y el panel desplegado sin que parpadee.
+    li.addEventListener('mouseenter', function () {
+      if (!desktopQuery.matches) return;
+      clearTimeout(closeTimer);
+      openSubmenu(btn);
+    });
+    li.addEventListener('mouseleave', function () {
+      if (!desktopQuery.matches) return;
+      closeTimer = setTimeout(function () { closeSubmenu(btn); }, 180);
+    });
   });
 
   document.addEventListener('click', function (e) {
-    if (!e.target.closest('.main-nav li')) {
-      parents.forEach(function (btn) {
-        btn.setAttribute('aria-expanded', 'false');
-        document.getElementById(btn.getAttribute('aria-controls')).classList.remove('is-open');
-      });
-    }
+    if (!e.target.closest('.main-nav li')) closeAllSubmenus(null);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAllSubmenus(null);
   });
 
   /* ------------------------------------------------------------------------
