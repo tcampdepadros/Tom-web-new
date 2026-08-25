@@ -1,55 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hearth &amp; Bean — Coffee House</title>
-<meta name="description" content="Hearth & Bean is a neighborhood coffee house serving small-batch coffee, fresh pastries, and a warm place to slow down.">
+<title>Xbrake — Frenos de Alto Rendimiento</title>
+<meta name="description" content="Xbrake diseña y fabrica sistemas de frenado de alto rendimiento para automóviles, motos, bicicletas y vehículos comerciales, forjados en la competición.">
 
-<!-- Google Fonts: Playfair Display (headings) + Karla (body) — warm, editorial pairing suited to cafes/restaurants -->
+<!-- Google Fonts: Barlow Condensed (titulares técnicos, estilo automotriz) + Inter (cuerpo, alta legibilidad) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
   /* ==========================================================================
-     1. DESIGN TOKENS — warm, earthy/cream palette (coffee-house design system)
+     1. DESIGN TOKENS — negro / blanco / rojo racing (identidad "brake caliper")
      ========================================================================== */
   :root {
     /* Color */
-    --color-bg: #FFF8EC;
-    --color-bg-alt: #FBEEDA;
+    --color-bg: #FFFFFF;
+    --color-bg-alt: #F4F4F5;
     --color-surface: #FFFFFF;
-    --color-primary: #92400E;
-    --color-primary-dark: #6B330A;
-    --color-secondary: #B45309;
-    --color-accent: #D97706;
-    --color-text: #3B2413;
-    --color-text-muted: #78716C;
-    --color-border: #F0DDB0;
+    --color-ink: #0A0A0A;
+    --color-ink-soft: #1C1C1E;
+    --color-primary: #E10600;
+    --color-primary-dark: #A80500;
+    --color-secondary: #0A0A0A;
+    --color-accent: #E10600;
+    --color-text: #14141A;
+    --color-text-muted: #6B6B72;
+    --color-border: #E4E4E7;
     --color-on-primary: #FFFFFF;
+    --color-on-dark: #FFFFFF;
+    --color-on-dark-muted: rgba(255,255,255,0.64);
+    --color-dark-bg: #0A0A0A;
+    --color-dark-surface: #141416;
+    --color-dark-border: rgba(255,255,255,0.12);
 
     /* Typography */
-    --font-heading: 'Playfair Display', Georgia, serif;
-    --font-body: 'Karla', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-    /* Spacing scale (mobile-first, spacious for a marketing page) */
+    /* Spacing scale */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 1.5rem;
     --space-lg: 2.5rem;
     --space-xl: 4rem;
-    --space-2xl: 6rem;
+    --space-2xl: 6.5rem;
 
     /* Layout */
-    --container-width: 1180px;
-    --radius-sm: 10px;
-    --radius-md: 18px;
-    --radius-lg: 28px;
-    --header-height: 72px;
+    --container-width: 1240px;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --header-height: 76px;
 
     /* Motion */
-    --transition-fast: 180ms ease;
+    --transition-fast: 160ms ease;
     --transition-base: 260ms ease;
   }
 
@@ -58,10 +65,7 @@
      ========================================================================== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-  }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
   body {
     font-family: var(--font-body);
@@ -74,19 +78,18 @@
 
   img, svg { display: block; max-width: 100%; }
 
-  h1, h2, h3 {
-    font-family: var(--font-heading);
-    line-height: 1.15;
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    line-height: 1.05;
     font-weight: 700;
+    letter-spacing: 0.01em;
   }
 
   a { color: inherit; text-decoration: none; }
-
   ul { list-style: none; }
+  button, input, textarea, select { font: inherit; color: inherit; }
 
-  button, input, textarea { font: inherit; color: inherit; }
-
-  /* Respect users who prefer reduced motion */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after {
@@ -97,11 +100,10 @@
     }
   }
 
-  /* Visible focus ring for keyboard users — never remove outline without a replacement */
   :focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 3px;
   }
 
   .container {
@@ -130,8 +132,28 @@
     border-radius: var(--radius-sm);
     z-index: 1000;
     transition: top var(--transition-base);
+    font-weight: 600;
   }
   .skip-link:focus { top: var(--space-sm); }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 2px;
+    background: var(--color-primary);
+    display: inline-block;
+  }
 
   /* ==========================================================================
      3. BUTTONS
@@ -140,16 +162,18 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    min-height: 48px; /* ≥44px touch target */
-    padding: 0.85rem 1.75rem;
-    border-radius: 999px;
+    gap: 0.6rem;
+    min-height: 50px;
+    padding: 0.85rem 2rem;
+    border-radius: 2px;
+    font-family: var(--font-display);
     font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.01em;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
     white-space: nowrap;
   }
   .btn:active { transform: translateY(1px); }
@@ -157,23 +181,32 @@
   .btn--primary {
     background: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 8px 20px -8px rgba(146, 64, 14, 0.55);
+    box-shadow: 0 10px 24px -10px rgba(225, 6, 0, 0.6);
   }
-  .btn--primary:hover,
-  .btn--primary:focus-visible {
+  .btn--primary:hover, .btn--primary:focus-visible {
     background: var(--color-primary-dark);
-    box-shadow: 0 12px 26px -8px rgba(146, 64, 14, 0.6);
+    box-shadow: 0 14px 30px -10px rgba(225, 6, 0, 0.7);
   }
 
-  .btn--outline {
+  .btn--outline-dark {
     background: transparent;
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: var(--color-ink);
+    color: var(--color-ink);
   }
-  .btn--outline:hover,
-  .btn--outline:focus-visible {
-    background: var(--color-primary);
+  .btn--outline-dark:hover, .btn--outline-dark:focus-visible {
+    background: var(--color-ink);
     color: var(--color-on-primary);
+  }
+
+  .btn--outline-light {
+    background: transparent;
+    border-color: rgba(255,255,255,0.55);
+    color: #fff;
+  }
+  .btn--outline-light:hover, .btn--outline-light:focus-visible {
+    background: #fff;
+    border-color: #fff;
+    color: var(--color-ink);
   }
 
   .btn--full { width: 100%; }
@@ -182,41 +215,44 @@
      4. HEADER + NAVIGATION
      ========================================================================== */
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
     height: var(--header-height);
     display: flex;
     align-items: center;
-    background: rgba(255, 248, 236, 0.85);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+  .site-header.is-scrolled,
+  .site-header.is-open {
+    background: rgba(10, 10, 10, 0.97);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid transparent;
-    transition: box-shadow var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
-  }
-
-  .site-header.is-scrolled {
-    background: rgba(255, 248, 236, 0.97);
-    border-bottom-color: var(--color-border);
-    box-shadow: 0 8px 24px -18px rgba(59, 36, 19, 0.4);
+    border-bottom-color: var(--color-dark-border);
+    box-shadow: 0 10px 30px -20px rgba(0,0,0,0.6);
   }
 
   .site-header .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 100%;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-primary-dark);
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
   }
   .brand svg { color: var(--color-primary); flex-shrink: 0; }
+  .brand .brand-x { color: var(--color-primary); }
 
   .nav-toggle {
     display: inline-flex;
@@ -227,11 +263,10 @@
     background: none;
     border: none;
     border-radius: var(--radius-sm);
-    color: var(--color-primary-dark);
+    color: #fff;
     cursor: pointer;
   }
-  .nav-toggle:hover { background: var(--color-bg-alt); }
-
+  .nav-toggle:hover { background: rgba(255,255,255,0.08); }
   .nav-toggle .icon-close { display: none; }
   .nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
   .nav-toggle[aria-expanded="true"] .icon-close { display: block; }
@@ -239,73 +274,115 @@
   .main-nav {
     position: fixed;
     inset: var(--header-height) 0 0 0;
-    background: var(--color-bg);
-    padding: var(--space-lg) var(--space-md);
+    background: var(--color-dark-bg);
+    padding: var(--space-lg) var(--space-md) var(--space-xl);
     transform: translateX(100%);
     transition: transform var(--transition-base);
     overflow-y: auto;
   }
   .main-nav.is-open { transform: translateX(0); }
 
-  .nav-list {
+  .nav-list { display: flex; flex-direction: column; gap: 0; }
+  .nav-list > li { border-bottom: 1px solid var(--color-dark-border); }
+  .nav-list > li > a,
+  .nav-list > li > button.nav-parent {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-  .nav-list a {
-    display: block;
-    padding: 0.9rem var(--space-xs);
-    font-size: 1.1rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1.05rem 0.1rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
     font-weight: 600;
-    color: var(--color-text);
-    border-bottom: 1px solid var(--color-border);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #fff;
     min-height: 44px;
+    cursor: pointer;
+    text-align: left;
   }
-  .nav-list a:hover,
-  .nav-list a:focus-visible,
-  .nav-list a.is-active {
-    color: var(--color-primary);
+  .nav-list > li > a:hover, .nav-list > li > a:focus-visible,
+  .nav-list > li > a.is-active,
+  .nav-list > li > button.nav-parent:hover { color: var(--color-primary); }
+
+  .nav-parent .chevron { transition: transform var(--transition-fast); color: var(--color-on-dark-muted); }
+  .nav-parent[aria-expanded="true"] .chevron { transform: rotate(180deg); color: var(--color-primary); }
+
+  .submenu {
+    display: none;
+    padding: 0 0 1.1rem 0.1rem;
   }
+  .submenu.is-open { display: block; }
+  .submenu-group { margin-bottom: 1rem; }
+  .submenu-group h4 {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--color-on-dark-muted);
+    margin-bottom: 0.5rem;
+  }
+  .submenu-group a {
+    display: block;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    text-transform: none;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    min-height: 40px;
+  }
+  .submenu-group a:hover, .submenu-group a:focus-visible { color: var(--color-primary); }
 
   .nav-cta { margin-top: var(--space-md); }
 
-  /* Tablet and up: horizontal nav, no hamburger */
-  @media (min-width: 768px) {
+  /* Desktop nav */
+  @media (min-width: 960px) {
     .nav-toggle { display: none; }
 
     .main-nav {
-      position: static;
-      inset: auto;
-      transform: none;
-      background: none;
-      padding: 0;
-      width: auto;
-      overflow: visible;
+      position: static; inset: auto; transform: none;
+      background: none; padding: 0; width: auto; overflow: visible;
     }
-    .nav-list {
-      flex-direction: row;
-      align-items: center;
-      gap: var(--space-md);
-    }
-    .nav-list a {
-      border-bottom: none;
-      padding: 0.5rem 0.1rem;
+    .nav-list { flex-direction: row; align-items: center; gap: var(--space-lg); }
+    .nav-list > li { border-bottom: none; position: relative; }
+
+    .nav-list > li > a, .nav-list > li > button.nav-parent {
+      padding: 0.4rem 0.1rem;
+      font-size: 0.95rem;
+      min-height: auto;
       position: relative;
+      gap: 0.35rem;
     }
-    .nav-list a::after {
+    .nav-list > li > a::after {
       content: "";
       position: absolute;
-      left: 0; right: 100%;
-      bottom: -2px;
+      left: 0; right: 100%; bottom: -6px;
       height: 2px;
-      background: var(--color-accent);
+      background: var(--color-primary);
       transition: right var(--transition-base);
     }
-    .nav-list a:hover::after,
-    .nav-list a:focus-visible::after,
-    .nav-list a.is-active::after {
-      right: 0;
+    .nav-list > li > a:hover::after,
+    .nav-list > li > a:focus-visible::after,
+    .nav-list > li > a.is-active::after { right: 0; }
+
+    .submenu {
+      position: absolute;
+      top: calc(100% + 1.4rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-dark-bg);
+      border: 1px solid var(--color-dark-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      min-width: 460px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem 2rem;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
     }
+    .submenu-group a { padding: 0.35rem 0; }
+
     .nav-cta { margin-top: 0; }
   }
 
@@ -314,93 +391,89 @@
      ========================================================================== */
   .hero {
     position: relative;
-    padding-block: var(--space-2xl) var(--space-xl);
+    min-height: 92vh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: calc(var(--header-height) + var(--space-xl));
+    padding-bottom: var(--space-2xl);
     background:
-      radial-gradient(circle at 85% 15%, rgba(217, 119, 6, 0.16), transparent 55%),
-      radial-gradient(circle at 10% 90%, rgba(146, 64, 14, 0.14), transparent 50%),
-      var(--color-bg);
+      radial-gradient(circle at 78% 22%, rgba(225, 6, 0, 0.35), transparent 45%),
+      radial-gradient(circle at 15% 85%, rgba(225, 6, 0, 0.18), transparent 55%),
+      linear-gradient(180deg, #050505 0%, #0f0f10 55%, #050505 100%);
+    color: #fff;
     overflow: hidden;
   }
-
-  .hero .container {
-    display: grid;
-    gap: var(--space-lg);
-    align-items: center;
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 90px);
+    pointer-events: none;
   }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-primary-dark);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.45rem 0.9rem;
-    border-radius: 999px;
-    margin-bottom: var(--space-sm);
-  }
+  .hero .container { position: relative; z-index: 1; }
 
   .hero h1 {
-    font-size: clamp(2.2rem, 6vw, 3.75rem);
-    color: var(--color-primary-dark);
-    max-width: 16ch;
+    font-size: clamp(2.6rem, 8vw, 5.6rem);
+    max-width: 18ch;
+    color: #fff;
   }
+  .hero h1 span { color: var(--color-primary); }
 
   .hero p {
     margin-top: var(--space-sm);
-    max-width: 52ch;
-    font-size: 1.1rem;
-    color: var(--color-text-muted);
+    max-width: 46ch;
+    font-size: 1.15rem;
+    color: var(--color-on-dark-muted);
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
-    margin-top: var(--space-md);
+    margin-top: var(--space-lg);
   }
 
-  .hero-stats {
+  .hero-meta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-lg);
-    margin-top: var(--space-xl);
+    margin-top: var(--space-2xl);
     padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-dark-border);
   }
-  .hero-stats strong {
+  .hero-meta strong {
     display: block;
-    font-family: var(--font-heading);
-    font-size: 1.6rem;
-    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: #fff;
   }
-  .hero-stats span {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+  .hero-meta span {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-on-dark-muted);
   }
 
-  .hero-art {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(155deg, var(--color-secondary), var(--color-primary-dark));
-    box-shadow: 0 30px 60px -20px rgba(59, 36, 19, 0.45);
-    display: flex;
+  .scroll-cue {
+    position: absolute;
+    right: var(--space-sm);
+    bottom: var(--space-lg);
+    display: none;
     align-items: center;
-    justify-content: center;
-    color: rgba(255, 248, 236, 0.9);
+    gap: 0.6rem;
+    color: var(--color-on-dark-muted);
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
   }
-  .hero-art svg { width: 45%; height: 45%; }
-
-  @media (min-width: 900px) {
-    .hero .container {
-      grid-template-columns: 1.05fr 0.95fr;
-    }
+  .scroll-cue::after {
+    content: "";
+    width: 1px; height: 60px;
+    background: linear-gradient(180deg, var(--color-primary), transparent);
   }
+  @media (min-width: 700px) { .scroll-cue { display: flex; } }
 
   /* ==========================================================================
      6. SECTION HEADINGS (shared)
@@ -408,89 +481,221 @@
   section { padding-block: var(--space-2xl); }
 
   .section-head {
-    max-width: 640px;
-    margin-inline: auto;
-    text-align: center;
+    max-width: 680px;
     margin-bottom: var(--space-xl);
   }
-  .section-head .hero-eyebrow { margin-inline: auto; }
+  .section-head.center { margin-inline: auto; text-align: center; }
   .section-head h2 {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    color: var(--color-primary-dark);
+    font-size: clamp(2rem, 4.5vw, 3rem);
     margin-top: var(--space-xs);
+    color: var(--color-text);
   }
   .section-head p {
-    margin-top: var(--space-xs);
+    margin-top: var(--space-sm);
     color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+  .section-head.on-dark h2 { color: #fff; }
+  .section-head.on-dark p { color: var(--color-on-dark-muted); }
+
+  /* ==========================================================================
+     7. INTRO STRIP
+     ========================================================================== */
+  .intro {
+    padding-block: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .intro .container {
+    display: grid;
+    gap: var(--space-lg);
+  }
+  .intro p {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 3vw, 2.1rem);
+    text-transform: uppercase;
+    line-height: 1.25;
+    color: var(--color-text);
+    max-width: 26ch;
+  }
+  .intro p strong { color: var(--color-primary); }
+  .intro-copy { color: var(--color-text-muted); align-self: end; max-width: 46ch; font-size: 1.02rem; }
+
+  @media (min-width: 860px) {
+    .intro .container { grid-template-columns: 1.1fr 0.9fr; align-items: end; }
   }
 
   /* ==========================================================================
-     7. FEATURES / MENU HIGHLIGHTS
+     8. SOLUTIONS GRID
      ========================================================================== */
-  .features { background: var(--color-bg-alt); }
-
-  .feature-grid {
+  .solutions-grid {
     display: grid;
     gap: var(--space-md);
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 
-  .feature-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+  .solution-card {
+    position: relative;
+    background: var(--color-ink);
+    color: #fff;
     border-radius: var(--radius-md);
     padding: var(--space-lg) var(--space-md);
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
     transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
-  .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px -24px rgba(59, 36, 19, 0.35);
+  .solution-card::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 85% 0%, rgba(225,6,0,0.35), transparent 60%);
+    opacity: 0.8;
+    transition: opacity var(--transition-base);
   }
+  .solution-card:hover, .solution-card:focus-within {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 50px -24px rgba(0,0,0,0.5);
+  }
+  .solution-card:hover::before { opacity: 1; }
 
-  .feature-icon {
+  .solution-icon {
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius-sm);
-    background: var(--color-bg-alt);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
     color: var(--color-primary);
-    margin-bottom: var(--space-sm);
-  }
-  .feature-card:hover .feature-icon {
-    background: var(--color-primary);
-    color: var(--color-on-primary);
+    margin-bottom: var(--space-md);
   }
 
-  .feature-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
+  .solution-card h3 { position: relative; z-index: 1; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .solution-card p { position: relative; z-index: 1; color: rgba(255,255,255,0.72); font-size: 0.95rem; margin-bottom: var(--space-sm); }
+  .solution-link {
+    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
   }
-  .feature-card p { color: var(--color-text-muted); font-size: 0.97rem; }
+  .solution-link svg { transition: transform var(--transition-fast); }
+  .solution-card:hover .solution-link svg { transform: translateX(4px); }
 
   /* ==========================================================================
-     8. CONTACT
+     9. MOTORSPORT
      ========================================================================== */
-  .contact-grid {
+  .motorsport {
+    background: var(--color-dark-bg);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .motorsport::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 10% 10%, rgba(225,6,0,0.22), transparent 50%);
+  }
+  .motorsport .container { position: relative; z-index: 1; }
+
+  .series-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--color-dark-border);
+    border: 1px solid var(--color-dark-border);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .series-item {
+    background: var(--color-dark-bg);
+    padding: var(--space-lg) var(--space-sm);
+    text-align: center;
+    transition: background-color var(--transition-fast);
+  }
+  .series-item:hover { background: rgba(225,6,0,0.12); }
+  .series-item strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.25rem;
+  }
+  .series-item span { font-size: 0.78rem; color: var(--color-on-dark-muted); letter-spacing: 0.04em; }
+
+  @media (min-width: 640px) { .series-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 960px) { .series-grid { grid-template-columns: repeat(7, 1fr); } }
+
+  /* ==========================================================================
+     10. STATS BAND
+     ========================================================================== */
+  .stats-band {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .stats-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+  }
+  .stats-grid strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    line-height: 1;
+  }
+  .stats-grid span {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+  }
+  @media (min-width: 720px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  /* ==========================================================================
+     11. INNOVATION / SUSTAINABILITY SPLIT
+     ========================================================================== */
+  .split {
     display: grid;
     gap: var(--space-xl);
   }
+  .split-block {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg);
+  }
+  .split-block.dark {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .split-block.dark p { color: rgba(255,255,255,0.72); }
+  .split-block h3 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-top: 0.5rem; }
+  .split-block p { color: var(--color-text-muted); margin-top: var(--space-sm); max-width: 48ch; }
+  .split-block .btn { margin-top: var(--space-lg); }
 
+  @media (min-width: 860px) { .split { grid-template-columns: 1fr 1fr; } }
+
+  /* ==========================================================================
+     12. CONTACT
+     ========================================================================== */
+  .contact-grid { display: grid; gap: var(--space-xl); }
   .contact-info { display: grid; gap: var(--space-md); align-content: start; }
 
-  .info-row {
-    display: flex;
-    gap: var(--space-sm);
-    align-items: flex-start;
+  .info-row { display: flex; gap: var(--space-sm); align-items: flex-start; }
+  .info-row .icon-badge {
+    width: 44px; height: 44px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-alt);
+    color: var(--color-primary);
   }
-  .info-row .feature-icon {
-    width: 44px; height: 44px;
-    margin-bottom: 0;
-    flex-shrink: 0;
-  }
-  .info-row h3 { font-size: 1rem; margin-bottom: 0.2rem; }
+  .info-row h3 { font-size: 1rem; margin-bottom: 0.2rem; text-transform: none; }
   .info-row p { color: var(--color-text-muted); font-size: 0.95rem; }
 
   .contact-form {
@@ -498,195 +703,225 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: var(--space-lg);
-    box-shadow: 0 20px 50px -30px rgba(59, 36, 19, 0.4);
+    box-shadow: 0 20px 50px -30px rgba(10,10,10,0.4);
   }
 
   .form-row { margin-bottom: var(--space-md); }
   .form-row label {
     display: block;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     margin-bottom: 0.4rem;
-    color: var(--color-text);
   }
-
-  .form-row input,
-  .form-row textarea {
+  .form-row input, .form-row textarea, .form-row select {
     width: 100%;
     min-height: 48px;
     padding: 0.75rem 1rem;
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-sm);
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: var(--color-bg-alt);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   }
   .form-row textarea { min-height: 120px; resize: vertical; }
-
-  .form-row input:hover,
-  .form-row textarea:hover { border-color: var(--color-secondary); }
-
-  .form-row input:focus,
-  .form-row textarea:focus {
+  .form-row input:hover, .form-row textarea:hover, .form-row select:hover { border-color: #c8c8cc; }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(146, 64, 14, 0.15);
+    box-shadow: 0 0 0 4px rgba(225, 6, 0, 0.15);
   }
-
-  .form-row input:invalid[data-touched="true"],
-  .form-row textarea:invalid[data-touched="true"] {
+  .form-row input:invalid[data-touched="true"], .form-row textarea:invalid[data-touched="true"] {
     border-color: #B91C1C;
   }
-
-  .form-error {
-    color: #B91C1C;
-    font-size: 0.82rem;
-    margin-top: 0.35rem;
-    min-height: 1.1em;
-  }
-
+  .form-error { color: #B91C1C; font-size: 0.8rem; margin-top: 0.35rem; min-height: 1.1em; }
   .form-status {
     margin-top: var(--space-sm);
     padding: 0.85rem 1rem;
     border-radius: var(--radius-sm);
-    background: #ECFDF5;
-    border: 1px solid #A7F3D0;
-    color: #065F46;
-    font-size: 0.92rem;
-    display: none;
+    background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46;
+    font-size: 0.92rem; display: none;
   }
   .form-status.is-visible { display: block; }
 
-  @media (min-width: 860px) {
-    .contact-grid { grid-template-columns: 0.85fr 1.15fr; }
-  }
+  @media (min-width: 860px) { .contact-grid { grid-template-columns: 0.85fr 1.15fr; } }
 
   /* ==========================================================================
-     9. FOOTER
+     13. FOOTER
      ========================================================================== */
   .site-footer {
-    background: var(--color-primary-dark);
-    color: rgba(255, 248, 236, 0.85);
+    background: var(--color-dark-bg);
+    color: var(--color-on-dark-muted);
     padding-block: var(--space-xl) var(--space-md);
   }
+  .footer-top {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: var(--space-md);
+    padding-bottom: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-dark-border);
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: 0.55rem;
+    font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
+    color: #fff;
+  }
+  .footer-brand svg { color: var(--color-primary); }
+  .footer-tagline { font-size: 0.95rem; max-width: 34ch; }
 
   .footer-grid {
     display: grid;
     gap: var(--space-lg);
   }
-
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: var(--space-xs);
-  }
-  .footer-brand svg { color: var(--color-accent); }
-
   .footer-col h3 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: rgba(255, 248, 236, 0.6);
+    letter-spacing: 0.1em;
+    color: #fff;
     margin-bottom: var(--space-sm);
+    font-family: var(--font-display);
   }
+  .footer-links { display: grid; gap: 0.55rem; }
+  .footer-links a, .footer-links span { min-height: 24px; font-size: 0.92rem; }
+  .footer-links a:hover, .footer-links a:focus-visible { color: #fff; }
 
-  .footer-links { display: grid; gap: 0.6rem; }
-  .footer-links a { min-height: 24px; }
-  .footer-links a:hover,
-  .footer-links a:focus-visible { color: #fff; }
-
-  .social-links {
-    display: flex;
-    gap: 0.6rem;
-  }
-  .social-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    transition: background var(--transition-fast), transform var(--transition-fast);
-  }
-  .social-links a:hover,
-  .social-links a:focus-visible {
-    background: var(--color-accent);
-    transform: translateY(-3px);
-  }
-
-  .footer-bottom {
+  .footer-bottom-row {
     margin-top: var(--space-xl);
     padding-top: var(--space-md);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: rgba(255, 248, 236, 0.6);
+    border-top: 1px solid var(--color-dark-border);
+    display: flex; flex-wrap: wrap; gap: var(--space-md);
+    align-items: center; justify-content: space-between;
   }
 
-  @media (min-width: 768px) {
-    .footer-grid { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+  .social-links { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+  .social-links a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    transition: background var(--transition-fast), transform var(--transition-fast);
   }
+  .social-links a:hover, .social-links a:focus-visible {
+    background: var(--color-primary); transform: translateY(-3px);
+  }
+
+  .lang-select {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.9rem;
+  }
+  .lang-select select {
+    background: transparent; border: none; color: #fff;
+    font-size: 0.85rem;
+  }
+  .lang-select select option { color: #111; }
+
+  .footer-legal {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem;
+    font-size: 0.82rem;
+  }
+  .footer-legal a:hover, .footer-legal a:focus-visible { color: #fff; }
+
+  .footer-copyright { font-size: 0.82rem; }
+
+  @media (min-width: 700px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .footer-grid { grid-template-columns: repeat(5, 1fr); } }
 
   /* ==========================================================================
-     10. SCROLL-REVEAL ANIMATION (progressive enhancement)
+     14. SCROLL-REVEAL ANIMATION
      ========================================================================== */
   [data-reveal] {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 500ms ease, transform 500ms ease;
+    transition: opacity 550ms ease, transform 550ms ease;
   }
-  [data-reveal].is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  /* If JS never runs, content must still be visible */
+  [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
   .no-js [data-reveal] { opacity: 1; transform: none; }
 </style>
 </head>
 <body class="no-js">
-<a class="skip-link" href="#main-content">Skip to main content</a>
+<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
 <!-- ==========================================================================
-     HEADER — sticky navigation with mobile hamburger menu
+     HEADER — navegación fija con mega-menú y menú hamburguesa en móvil
      ========================================================================== -->
 <header class="site-header" id="site-header">
   <div class="container">
-    <a href="#home" class="brand" aria-label="Hearth & Bean — home">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 8h13a3 3 0 0 1 0 6h-1"/>
-        <path d="M4 8v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-1"/>
-        <path d="M8 3.5c-.6.7-.6 1.4 0 2.1M12 3.5c-.6.7-.6 1.4 0 2.1"/>
+    <a href="#inicio" class="brand" aria-label="Xbrake — inicio">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <circle cx="12" cy="12" r="3.4"/>
+        <path d="M12 3v3M12 18v3M21 12h-3M6 12H3"/>
       </svg>
-      Hearth &amp; Bean
+      <span>X<span class="brand-x">BRAKE</span></span>
     </a>
 
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation menu">
-      <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-        <path d="M3 6h18M3 12h18M3 18h18"/>
-      </svg>
-      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-        <path d="M6 6l12 12M18 6L6 18"/>
-      </svg>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menú de navegación">
+      <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
 
-    <nav class="main-nav" id="main-nav" aria-label="Primary">
+    <nav class="main-nav" id="main-nav" aria-label="Principal">
       <ul class="nav-list">
-        <li><a href="#home" class="is-active">Home</a></li>
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#innovacion" class="is-active">Xsense</a></li>
+
+        <li>
+          <button class="nav-parent" id="solutions-toggle" aria-expanded="false" aria-controls="solutions-menu">
+            Soluciones
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="submenu" id="solutions-menu">
+            <div class="submenu-group">
+              <h4>Automóviles</h4>
+              <a href="#soluciones">Uso particular</a>
+              <a href="#soluciones">Equipo original (OE)</a>
+              <a href="#soluciones">Competición</a>
+            </div>
+            <div class="submenu-group">
+              <h4>Motos</h4>
+              <a href="#soluciones">Uso particular</a>
+              <a href="#soluciones">Equipo original (OE)</a>
+              <a href="#soluciones">Competición</a>
+            </div>
+            <div class="submenu-group">
+              <h4>Bicicleta</h4>
+              <a href="#soluciones">Uso particular</a>
+              <a href="#soluciones">Competición</a>
+            </div>
+            <div class="submenu-group">
+              <h4>Otros</h4>
+              <a href="#soluciones">Vehículos comerciales</a>
+              <a href="#sostenibilidad">Xgreen</a>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <button class="nav-parent" id="motorsport-toggle" aria-expanded="false" aria-controls="motorsport-menu">
+            Motorsport
+            <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="submenu" id="motorsport-menu">
+            <div class="submenu-group">
+              <h4>Cuatro ruedas</h4>
+              <a href="#motorsport">Fórmula 1</a>
+              <a href="#motorsport">WEC</a>
+              <a href="#motorsport">NASCAR</a>
+              <a href="#motorsport">Fórmula E</a>
+            </div>
+            <div class="submenu-group">
+              <h4>Dos ruedas</h4>
+              <a href="#motorsport">MotoGP</a>
+              <a href="#motorsport">WSBK</a>
+              <a href="#motorsport">WRC</a>
+            </div>
+          </div>
+        </li>
+
+        <li><a href="#sostenibilidad">Vive Nuestra Energía</a></li>
+        <li><a href="#contacto">Contacto</a></li>
       </ul>
       <div class="nav-cta">
-        <a href="#contact" class="btn btn--primary btn--full">Visit Us Today</a>
+        <a href="#contacto" class="btn btn--primary btn--full">Encuentra tu producto</a>
       </div>
     </nav>
   </div>
@@ -695,173 +930,227 @@
 <main id="main-content">
 
   <!-- ========================================================================
-       HERO — headline, subheadline, primary CTA
+       HERO — pantalla completa, tagline principal + CTA
        ======================================================================== -->
-  <section class="hero" id="home" aria-labelledby="hero-heading">
+  <section class="hero" id="inicio" aria-labelledby="hero-heading">
     <div class="container">
-      <div>
-        <span class="hero-eyebrow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
-          Freshly roasted, every morning
-        </span>
-        <h1 id="hero-heading">Your Daily Ritual, Perfectly Brewed</h1>
-        <p>Small-batch coffee, fresh-baked pastries, and a warm corner to slow down — welcome to the neighborhood spot people come back to, every single day.</p>
-        <div class="hero-actions">
-          <a href="#menu" class="btn btn--primary">See Today's Menu</a>
-          <a href="#about" class="btn btn--outline">Our Story</a>
+      <span class="eyebrow" style="color:#fff;">Desde 1961, ingeniería de frenado</span>
+      <h1 id="hero-heading">La energía se transforma en <span>inspiración</span></h1>
+      <p>Xbrake diseña y fabrica sistemas de frenado de alto rendimiento, forjados en la competición y llevados a cada automóvil, moto, bicicleta y vehículo comercial del mundo.</p>
+      <div class="hero-actions">
+        <a href="#soluciones" class="btn btn--primary">Leer más</a>
+        <a href="#motorsport" class="btn btn--outline-light">Ver Motorsport</a>
+      </div>
+
+      <div class="hero-meta">
+        <div><strong>60+</strong><span>Años de historia</span></div>
+        <div><strong>15</strong><span>Plantas en el mundo</span></div>
+        <div><strong>32</strong><span>Títulos en competición</span></div>
+        <div><strong>+120</strong><span>Países servidos</span></div>
+      </div>
+    </div>
+    <span class="scroll-cue" aria-hidden="true">Desplázate</span>
+  </section>
+
+  <!-- ========================================================================
+       INTRO — declaración de marca breve
+       ======================================================================== -->
+  <section class="intro">
+    <div class="container">
+      <p>Frenamos donde <strong>cada milisegundo</strong> importa.</p>
+      <p class="intro-copy">De la pista a la carretera: nuestra tecnología de frenado nace en los campeonatos más exigentes del mundo y llega, perfeccionada, a cada vehículo que fabricamos para el día a día.</p>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SOLUCIONES — tarjetas por segmento de vehículo
+       ======================================================================== -->
+  <section id="soluciones" aria-labelledby="solutions-heading">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Nuestras soluciones</span>
+        <h2 id="solutions-heading">Un sistema de frenado para cada camino</h2>
+        <p>Desarrollamos tecnología propia para cuatro segmentos, desde el uso particular hasta la competición de más alto nivel.</p>
+      </div>
+
+      <div class="solutions-grid">
+        <article class="solution-card" data-reveal>
+          <div class="solution-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 16l1.5-5A3 3 0 0 1 8.4 9h7.2a3 3 0 0 1 2.9 2l1.5 5"/>
+              <rect x="2.5" y="16" width="19" height="4" rx="1.5"/>
+              <circle cx="7" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/>
+            </svg>
+          </div>
+          <h3>Automóviles</h3>
+          <p>Discos, pinzas y pastillas de altas prestaciones, en equipo original y recambio.</p>
+          <a href="#soluciones" class="solution-link">Descubrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="solution-card" data-reveal>
+          <div class="solution-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/>
+              <path d="M9.5 17h4.7l3-8h2.3M9.5 17 12 9H8.2L6 12"/>
+            </svg>
+          </div>
+          <h3>Motos</h3>
+          <p>Precisión y control extremo, desde motos urbanas hasta superbikes de circuito.</p>
+          <a href="#soluciones" class="solution-link">Descubrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="solution-card" data-reveal>
+          <div class="solution-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="5.5" cy="17.5" r="3.2"/><circle cx="18.5" cy="17.5" r="3.2"/>
+              <path d="M5.5 17.5 10 8h3l5.5 9.5M10 8 8 5"/>
+            </svg>
+          </div>
+          <h3>Bicicleta</h3>
+          <p>Frenos hidráulicos ligeros y potentes para carretera, gravel y montaña.</p>
+          <a href="#soluciones" class="solution-link">Descubrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+
+        <article class="solution-card" data-reveal>
+          <div class="solution-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 17V8.5A1.5 1.5 0 0 1 4 7h8v10"/>
+              <path d="M12 10h4.3a1.5 1.5 0 0 1 1.2.6l2.6 3.4a1.5 1.5 0 0 1 .4 1v2"/>
+              <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+            </svg>
+          </div>
+          <h3>Vehículos comerciales</h3>
+          <p>Sistemas de frenado robustos y fiables para flotas y transporte pesado.</p>
+          <a href="#soluciones" class="solution-link">Descubrir <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MOTORSPORT — campeonatos donde compite la tecnología Xbrake
+       ======================================================================== -->
+  <section class="motorsport" id="motorsport" aria-labelledby="motorsport-heading">
+    <div class="container">
+      <div class="section-head on-dark" data-reveal>
+        <span class="eyebrow">Motorsport</span>
+        <h2 id="motorsport-heading">Donde nace nuestra tecnología</h2>
+        <p>Nuestros frenos compiten y ganan en las categorías más exigentes del planeta, un laboratorio permanente que después baja a la calle.</p>
+      </div>
+
+      <div class="series-grid" data-reveal>
+        <div class="series-item"><strong>F1</strong><span>Fórmula 1</span></div>
+        <div class="series-item"><strong>MotoGP</strong><span>Moto GP</span></div>
+        <div class="series-item"><strong>WEC</strong><span>Resistencia</span></div>
+        <div class="series-item"><strong>WSBK</strong><span>Superbikes</span></div>
+        <div class="series-item"><strong>WRC</strong><span>Rally</span></div>
+        <div class="series-item"><strong>NASCAR</strong><span>Stock car</span></div>
+        <div class="series-item"><strong>F.E.</strong><span>Fórmula E</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       STATS — franja de cifras clave
+       ======================================================================== -->
+  <section class="stats-band" aria-labelledby="stats-heading">
+    <div class="container">
+      <h2 id="stats-heading" class="visually-hidden">Xbrake en cifras</h2>
+      <div class="stats-grid" data-reveal>
+        <div><strong data-counter="60">0</strong><span>Años de experiencia</span></div>
+        <div><strong data-counter="15">0</strong><span>Plantas de producción</span></div>
+        <div><strong data-counter="8000">0</strong><span>Personas en el equipo</span></div>
+        <div><strong data-counter="120">0</strong><span>Países con distribución</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       INNOVACIÓN + SOSTENIBILIDAD — bloque dividido
+       ======================================================================== -->
+  <section id="innovacion" aria-labelledby="innovation-heading">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Xsense &amp; Xgreen</span>
+        <h2 id="innovation-heading">Innovación al servicio de la seguridad</h2>
+      </div>
+
+      <div class="split">
+        <div class="split-block dark" data-reveal>
+          <span class="eyebrow">Xsense</span>
+          <h3>Frenos que sienten la carretera</h3>
+          <p>Nuestra plataforma de frenado inteligente integra sensores en pinza y disco para anticipar el desgaste, optimizar el reparto de frenada y comunicarse con los sistemas de asistencia a la conducción.</p>
+          <a href="#contacto" class="btn btn--outline-light">Conocer Xsense</a>
         </div>
-
-        <div class="hero-stats">
-          <div><strong>12+</strong><span>Years roasting</span></div>
-          <div><strong>18</strong><span>Origin blends</span></div>
-          <div><strong>4.9★</strong><span>Neighborhood rating</span></div>
+        <div class="split-block" data-reveal id="sostenibilidad">
+          <span class="eyebrow">Xgreen</span>
+          <h3>Frenar más limpio, también cuenta</h3>
+          <p>Discos de baja emisión de partículas, materiales reciclados y procesos de producción con menor huella de carbono: nuestro compromiso con una movilidad más sostenible.</p>
+          <a href="#contacto" class="btn btn--outline-dark">Conocer Xgreen</a>
         </div>
       </div>
-
-      <div class="hero-art" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 8h13a3 3 0 0 1 0 6h-1"/>
-          <path d="M4 8v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-1"/>
-          <path d="M7 3.2c-.7.8-.7 1.6 0 2.4M11 3.2c-.7.8-.7 1.6 0 2.4M15 3.2c-.7.8-.7 1.6 0 2.4"/>
-        </svg>
-      </div>
     </div>
   </section>
 
   <!-- ========================================================================
-       FEATURES — 3 cards, why customers choose the café
+       CONTACTO — formulario + datos de contacto
        ======================================================================== -->
-  <section class="features" id="menu" aria-labelledby="features-heading">
+  <section id="contacto" style="background: var(--color-bg-alt);" aria-labelledby="contact-heading">
     <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="hero-eyebrow">What we're known for</span>
-        <h2 id="features-heading">Made Slowly. Served Warmly.</h2>
-        <p>Every cup and every pastry is made the same way we'd want it ourselves — carefully, and without shortcuts.</p>
-      </div>
-
-      <div class="feature-grid">
-        <article class="feature-card" data-reveal>
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 8h13a3 3 0 0 1 0 6h-1"/>
-              <path d="M4 8v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-1"/>
-              <path d="M8 3.5c-.6.7-.6 1.4 0 2.1M12 3.5c-.6.7-.6 1.4 0 2.1"/>
-            </svg>
-          </div>
-          <h3>Specialty, Freshly Roasted</h3>
-          <p>Single-origin beans roasted in-house every week and ground to order for every cup we pour.</p>
-        </article>
-
-        <article class="feature-card" data-reveal>
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 21c-4-2.5-7-6.2-7-10a7 7 0 0 1 14 0c0 3.8-3 7.5-7 10Z"/>
-              <path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-            </svg>
-          </div>
-          <h3>Ethically Sourced</h3>
-          <p>Direct-trade relationships with growers, so every bag supports the farms it comes from.</p>
-        </article>
-
-        <article class="feature-card" data-reveal>
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 20v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6"/>
-              <path d="M4 20h16M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/>
-            </svg>
-          </div>
-          <h3>A Cozy Place to Belong</h3>
-          <p>Soft seating, warm light, and slow mornings — a space made for lingering, not rushing.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       ABOUT — short brand story (supports the "About Us" nav link)
-       ======================================================================== -->
-  <section id="about" aria-labelledby="about-heading">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="hero-eyebrow">Since 2013</span>
-        <h2 id="about-heading">A Neighborhood Kitchen for Coffee Lovers</h2>
-        <p>Hearth &amp; Bean started as a single roaster in a garage. Today it's a corner where regulars know each other by name, and first-time visitors leave planning their next visit.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       CONTACT — form + visit information
-       ======================================================================== -->
-  <section class="features" id="contact" aria-labelledby="contact-heading">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="hero-eyebrow">Say hello</span>
-        <h2 id="contact-heading">Visit Us or Send a Message</h2>
-        <p>Questions about catering, private events, or just want to say hi? We'd love to hear from you.</p>
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Hablemos</span>
+        <h2 id="contact-heading">Encuentra tu solución Xbrake</h2>
+        <p>¿Eres fabricante, distribuidor o piloto? Cuéntanos qué necesitas y nuestro equipo técnico te responderá en breve.</p>
       </div>
 
       <div class="contact-grid">
         <div class="contact-info" data-reveal>
           <div class="info-row">
-            <div class="feature-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/>
-                <circle cx="12" cy="9.5" r="2.4"/>
-              </svg>
+            <div class="icon-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
             </div>
-            <div>
-              <h3>Find Us</h3>
-              <p>128 Maple Street, Riverside District</p>
-            </div>
+            <div><h3>Sede central</h3><p>Via delle Officine 87, Bérgamo, Italia</p></div>
           </div>
-
           <div class="info-row">
-            <div class="feature-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M12 7v5l3.2 2"/>
-              </svg>
+            <div class="icon-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
             </div>
-            <div>
-              <h3>Opening Hours</h3>
-              <p>Mon–Fri 7am–6pm · Sat–Sun 8am–5pm</p>
-            </div>
+            <div><h3>Atención comercial</h3><p>Lun–Vie 9:00–18:00 (CET)</p></div>
           </div>
-
           <div class="info-row">
-            <div class="feature-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M4 5c0 8.3 6.7 15 15 15l3-4-6-3-2 2c-2.2-1-4-2.8-5-5l2-2-3-6-4 0Z"/>
-              </svg>
+            <div class="icon-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5c0 8.3 6.7 15 15 15l3-4-6-3-2 2c-2.2-1-4-2.8-5-5l2-2-3-6-4 0Z"/></svg>
             </div>
-            <div>
-              <h3>Call Us</h3>
-              <p>(555) 481-2200</p>
-            </div>
+            <div><h3>Teléfono</h3><p>+34 900 123 456</p></div>
           </div>
         </div>
 
         <form class="contact-form" id="contact-form" data-reveal novalidate>
           <div class="form-row">
-            <label for="name">Name</label>
+            <label for="name">Nombre</label>
             <input type="text" id="name" name="name" autocomplete="name" required minlength="2">
             <p class="form-error" id="name-error"></p>
           </div>
-
           <div class="form-row">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" autocomplete="email" required>
             <p class="form-error" id="email-error"></p>
           </div>
-
           <div class="form-row">
-            <label for="message">Message</label>
+            <label for="segment">Segmento</label>
+            <select id="segment" name="segment">
+              <option>Automóviles</option>
+              <option>Motos</option>
+              <option>Bicicleta</option>
+              <option>Vehículos comerciales</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="message">Mensaje</label>
             <textarea id="message" name="message" required minlength="10"></textarea>
             <p class="form-error" id="message-error"></p>
           </div>
-
-          <button type="submit" class="btn btn--primary btn--full">Send Message</button>
+          <button type="submit" class="btn btn--primary btn--full">Enviar mensaje</button>
           <p class="form-status" id="form-status" role="status"></p>
         </form>
       </div>
@@ -871,65 +1160,98 @@
 </main>
 
 <!-- ==========================================================================
-     FOOTER — copyright + social links
+     FOOTER — corporativo, multi-columna, selector de idioma y legales
      ========================================================================== -->
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-top">
       <div>
         <div class="footer-brand">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 8h13a3 3 0 0 1 0 6h-1"/>
-            <path d="M4 8v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-1"/>
-          </svg>
-          Hearth &amp; Bean
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.4"/></svg>
+          XBRAKE
         </div>
-        <p>Coffee, pastries, and a place to slow down — in the heart of Riverside District.</p>
+        <p class="footer-tagline">Sistemas de frenado de alto rendimiento, forjados en la competición.</p>
+      </div>
+      <div class="social-links">
+        <a href="#" aria-label="Xbrake en Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="#" aria-label="Xbrake en Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H8v3h3v6h3v-6h2.5l.5-3H14V9Z"/></svg></a>
+        <a href="#" aria-label="Xbrake en LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4.5a2 2 0 0 1 4 0V17M12 12.5V17"/></svg></a>
+        <a href="#" aria-label="Xbrake en X"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 4l16 16M20 4 4 20"/></svg></a>
+        <a href="#" aria-label="Xbrake en YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2v-4Z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
 
-        <div class="social-links" style="margin-top: 1.25rem;">
-          <a href="#" aria-label="Follow us on Instagram">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg>
-          </a>
-          <a href="#" aria-label="Follow us on Facebook">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H8v3h3v6h3v-6h2.5l.5-3H14V9Z"/></svg>
-          </a>
-          <a href="#" aria-label="Follow us on X (Twitter)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 4l16 16M20 4 4 20"/></svg>
-          </a>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Soluciones</h3>
+        <div class="footer-links">
+          <a href="#soluciones">Automóviles</a>
+          <a href="#soluciones">Motos</a>
+          <a href="#soluciones">Bicicleta</a>
+          <a href="#soluciones">Vehículos comerciales</a>
+          <a href="#sostenibilidad">Xgreen</a>
         </div>
       </div>
 
       <div class="footer-col">
-        <h3>Explore</h3>
+        <h3>Motorsport</h3>
         <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="#menu">Menu</a>
-          <a href="#about">About Us</a>
-          <a href="#contact">Contact</a>
+          <a href="#motorsport">Fórmula 1</a>
+          <a href="#motorsport">MotoGP</a>
+          <a href="#motorsport">WEC</a>
+          <a href="#motorsport">WSBK</a>
+          <a href="#motorsport">WRC</a>
+          <a href="#motorsport">NASCAR</a>
+          <a href="#motorsport">Fórmula E</a>
         </div>
       </div>
 
       <div class="footer-col">
-        <h3>Visit</h3>
+        <h3>Corporativo</h3>
         <div class="footer-links">
-          <a href="#contact">128 Maple Street</a>
-          <a href="#contact">Riverside District</a>
-          <a href="#contact">(555) 481-2200</a>
+          <a href="#">Sobre Xbrake</a>
+          <a href="#">Inversores</a>
+          <a href="#">Empleo</a>
+          <a href="#">Sostenibilidad</a>
+          <a href="#">Sala de prensa</a>
         </div>
       </div>
 
       <div class="footer-col">
-        <h3>Hours</h3>
+        <h3>Encuéntranos</h3>
         <div class="footer-links">
-          <span>Mon–Fri: 7am – 6pm</span>
-          <span>Sat–Sun: 8am – 5pm</span>
+          <span>Via delle Officine 87</span>
+          <span>Bérgamo, Italia</span>
+          <a href="#contacto">+34 900 123 456</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>Idioma</h3>
+        <div class="lang-select">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          <label for="lang" class="visually-hidden">Elegir idioma</label>
+          <select id="lang" name="lang">
+            <option value="es" selected>Español</option>
+            <option value="en">English</option>
+            <option value="it">Italiano</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+          </select>
         </div>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <span id="copyright-year">© 2026 Hearth &amp; Bean Coffee House. All rights reserved.</span>
-      <span>Crafted with care, one cup at a time.</span>
+    <div class="footer-bottom-row">
+      <span class="footer-copyright" id="copyright-year">© 2026 Xbrake. Todos los derechos reservados.</span>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="#">Términos de uso</a>
+        <a href="#">Política de privacidad</a>
+        <a href="#">Política de cookies</a>
+        <a href="#">Mapa del sitio</a>
+        <a href="#">Información societaria</a>
+      </nav>
     </div>
   </div>
 </footer>
@@ -938,30 +1260,32 @@
 (function () {
   'use strict';
 
-  // Progressive enhancement: only rely on JS-driven states once JS is confirmed running
   document.body.classList.remove('no-js');
 
   /* ------------------------------------------------------------------------
-     Sticky header: add shadow/opaque background once the page is scrolled
+     Cabecera fija: fondo sólido al hacer scroll o con el menú móvil abierto
      ------------------------------------------------------------------------ */
   var header = document.getElementById('site-header');
-  var onScroll = function () {
-    header.classList.toggle('is-scrolled', window.scrollY > 12);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  /* ------------------------------------------------------------------------
-     Mobile navigation: hamburger toggle with proper aria-expanded state
-     ------------------------------------------------------------------------ */
   var navToggle = document.getElementById('nav-toggle');
   var mainNav = document.getElementById('main-nav');
-  var navLinks = mainNav.querySelectorAll('a[href^="#"]');
+
+  function syncHeaderState() {
+    var isNavOpen = mainNav.classList.contains('is-open');
+    header.classList.toggle('is-scrolled', window.scrollY > 12 || isNavOpen);
+  }
+  window.addEventListener('scroll', syncHeaderState, { passive: true });
+  syncHeaderState();
+
+  /* ------------------------------------------------------------------------
+     Menú móvil (hamburguesa)
+     ------------------------------------------------------------------------ */
+  var navLinks = mainNav.querySelectorAll('.nav-list > li > a');
 
   function closeNav() {
     navToggle.setAttribute('aria-expanded', 'false');
     mainNav.classList.remove('is-open');
     document.body.style.overflow = '';
+    syncHeaderState();
   }
 
   function toggleNav() {
@@ -969,11 +1293,11 @@
     navToggle.setAttribute('aria-expanded', String(!isOpen));
     mainNav.classList.toggle('is-open', !isOpen);
     document.body.style.overflow = !isOpen ? 'hidden' : '';
+    syncHeaderState();
   }
 
   navToggle.addEventListener('click', toggleNav);
 
-  // Close the mobile menu whenever a nav link is used, and set the active link
   navLinks.forEach(function (link) {
     link.addEventListener('click', function () {
       closeNav();
@@ -982,25 +1306,64 @@
     });
   });
 
-  // Escape key closes the mobile menu
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && mainNav.classList.contains('is-open')) closeNav();
   });
 
-  // If the viewport grows past the mobile breakpoint, reset menu state
-  var mobileQuery = window.matchMedia('(min-width: 768px)');
-  mobileQuery.addEventListener('change', function (e) {
+  var desktopQuery = window.matchMedia('(min-width: 960px)');
+  desktopQuery.addEventListener('change', function (e) {
     if (e.matches) closeNav();
   });
 
   /* ------------------------------------------------------------------------
-     Scroll-reveal animation via IntersectionObserver (skips gracefully if
-     the browser doesn't support it, or the user prefers reduced motion)
+     Submenús desplegables (Soluciones, Motorsport): clic en móvil/tablet,
+     hover + clic en escritorio
+     ------------------------------------------------------------------------ */
+  var parents = document.querySelectorAll('.nav-parent');
+
+  parents.forEach(function (btn) {
+    var submenu = document.getElementById(btn.getAttribute('aria-controls'));
+
+    function open() {
+      btn.setAttribute('aria-expanded', 'true');
+      submenu.classList.add('is-open');
+    }
+    function close() {
+      btn.setAttribute('aria-expanded', 'false');
+      submenu.classList.remove('is-open');
+    }
+    btn.addEventListener('click', function () {
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      parents.forEach(function (other) {
+        if (other !== btn) {
+          other.setAttribute('aria-expanded', 'false');
+          document.getElementById(other.getAttribute('aria-controls')).classList.remove('is-open');
+        }
+      });
+      isOpen ? close() : open();
+    });
+
+    var li = btn.closest('li');
+    li.addEventListener('mouseenter', function () { if (desktopQuery.matches) open(); });
+    li.addEventListener('mouseleave', function () { if (desktopQuery.matches) close(); });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.main-nav li')) {
+      parents.forEach(function (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        document.getElementById(btn.getAttribute('aria-controls')).classList.remove('is-open');
+      });
+    }
+  });
+
+  /* ------------------------------------------------------------------------
+     Revelado progresivo al hacer scroll (IntersectionObserver)
      ------------------------------------------------------------------------ */
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealTargets = document.querySelectorAll('[data-reveal]');
 
   if ('IntersectionObserver' in window && !prefersReducedMotion) {
-    var revealTargets = document.querySelectorAll('[data-reveal]');
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -1009,26 +1372,58 @@
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
     revealTargets.forEach(function (el) { observer.observe(el); });
   } else {
-    document.querySelectorAll('[data-reveal]').forEach(function (el) {
-      el.classList.add('is-visible');
-    });
+    revealTargets.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
   /* ------------------------------------------------------------------------
-     Contact form: lightweight client-side validation + simulated submit
-     (no backend is wired up — replace the setTimeout below with a real
-     fetch() call to your endpoint when one is available)
+     Contador animado de la franja de estadísticas
+     ------------------------------------------------------------------------ */
+  var counters = document.querySelectorAll('[data-counter]');
+
+  function animateCounter(el) {
+    var target = parseInt(el.getAttribute('data-counter'), 10);
+    if (prefersReducedMotion || !target) { el.textContent = target + '+'; return; }
+    var start = 0;
+    var duration = 1200;
+    var startTime = null;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(start + (target - start) * eased) + '+';
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window && counters.length) {
+    var counterObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { counterObserver.observe(el); });
+  } else {
+    counters.forEach(animateCounter);
+  }
+
+  /* ------------------------------------------------------------------------
+     Formulario de contacto: validación ligera + envío simulado
+     (sin backend conectado; sustituye el setTimeout por un fetch() real)
      ------------------------------------------------------------------------ */
   var form = document.getElementById('contact-form');
   var status = document.getElementById('form-status');
 
   var fields = [
-    { el: document.getElementById('name'), errorEl: document.getElementById('name-error'), message: 'Please enter your name.' },
-    { el: document.getElementById('email'), errorEl: document.getElementById('email-error'), message: 'Please enter a valid email address.' },
-    { el: document.getElementById('message'), errorEl: document.getElementById('message-error'), message: 'Message should be at least 10 characters.' }
+    { el: document.getElementById('name'), errorEl: document.getElementById('name-error'), message: 'Por favor, introduce tu nombre.' },
+    { el: document.getElementById('email'), errorEl: document.getElementById('email-error'), message: 'Introduce un email válido.' },
+    { el: document.getElementById('message'), errorEl: document.getElementById('message-error'), message: 'El mensaje debe tener al menos 10 caracteres.' }
   ];
 
   function validateField(field) {
@@ -1047,7 +1442,6 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-
     var allValid = fields.map(validateField).every(Boolean);
     if (!allValid) {
       fields.find(function (f) { return !f.el.checkValidity(); }).el.focus();
@@ -1056,24 +1450,23 @@
 
     var submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    submitBtn.textContent = 'Enviando…';
 
-    // Simulated network delay — swap for a real request when a backend exists
     setTimeout(function () {
-      status.textContent = 'Thanks! Your message has been received — we\'ll get back to you soon.';
+      status.textContent = '¡Gracias! Hemos recibido tu mensaje y te responderemos en breve.';
       status.classList.add('is-visible');
       form.reset();
       fields.forEach(function (f) { f.el.dataset.touched = 'false'; f.errorEl.textContent = ''; });
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Message';
+      submitBtn.textContent = 'Enviar mensaje';
     }, 900);
   });
 
   /* ------------------------------------------------------------------------
-     Footer year stays current automatically
+     Año del copyright siempre actualizado
      ------------------------------------------------------------------------ */
   document.getElementById('copyright-year').textContent =
-    '© ' + new Date().getFullYear() + ' Hearth & Bean Coffee House. All rights reserved.';
+    '© ' + new Date().getFullYear() + ' Xbrake. Todos los derechos reservados.';
 })();
 </script>
 </body>
