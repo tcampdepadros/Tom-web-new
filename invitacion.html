@@ -25,17 +25,24 @@
    Cambiá estas variables para adaptar la paleta y las fuentes a otro evento.
    ============================================================================ */
 :root{
-  /* Paleta: tonos tierra, dorado y blanco */
-  --color-bg:        #FBF7F0; /* marfil - fondo principal */
-  --color-bg-alt:     #F3E9DC; /* arena - fondo alterno de secciones */
-  --color-surface:    #FFFFFF;
-  --color-primary:    #B8935A; /* dorado */
-  --color-primary-dark:#8C6B3D;
-  --color-accent:     #A56A4B; /* terracota */
-  --color-text:       #3B2F26; /* marrón oscuro */
-  --color-text-muted: #7A6B5D;
-  --color-border:     #E4D5BE;
-  --color-on-primary: #FFFFFF;
+  /* Paleta: tonos tierra, dorado y blanco.
+     Ajustada con la skill ui-ux-pro-max (dataset "Wedding/Event Planning":
+     dorado + crema + un toque de salvia) y verificada contra WCAG AA:
+     --color-primary es decorativa (bordes, badges grandes, iconos);
+     --color-primary-dark es la que lleva texto blanco encima (botones,
+     franjas de fecha) porque da 6.2:1 de contraste vs. los 2.9:1 del dorado claro. */
+  --color-bg:          #FBF7F0; /* marfil - fondo principal */
+  --color-bg-alt:      #F3E9DC; /* arena - fondo alterno de secciones */
+  --color-surface:     #FFFFFF;
+  --color-primary:     #B8935A; /* dorado claro - uso decorativo */
+  --color-primary-dark:#7A5C33; /* dorado oscuro - uso sobre texto/botones (AA) */
+  --color-accent:      #8F5539; /* terracota oscurecida (AA sobre marfil y blanco) */
+  --color-sage:        #7C8A65; /* salvia - acento secundario sutil (confirmaciones) */
+  --color-text:        #3B2F26; /* marrón oscuro */
+  --color-text-muted:  #6A5847; /* oscurecido de #7A6B5D: pasaba 4.3:1, ahora 6.3:1 */
+  --color-border:      #E4D5BE;
+  --color-on-primary:  #FFFFFF;
+  --focus-ring:        0 0 0 3px rgba(122,92,51,.35);
 
   /* Tipografías */
   --font-script:  'Great Vibes', cursive;
@@ -76,9 +83,24 @@ img,svg{display:block;max-width:100%;}
 h1,h2,h3{font-family:var(--font-heading);line-height:1.15;font-weight:600;color:var(--color-primary-dark);}
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+a[href],button,input,select,textarea,summary,[tabindex]{cursor:pointer;}
+input[type=text],textarea{cursor:text;}
 input,select,textarea{font-family:inherit;font-size:1rem;}
 ul{list-style:none;}
 .container{width:100%;max-width:var(--container-w);margin-inline:auto;padding-inline:var(--space-md);}
+
+/* Foco visible para navegación por teclado (accesibilidad) */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--color-primary-dark);outline-offset:3px;box-shadow:var(--focus-ring);
+}
+
+/* Respeta la preferencia de "menos movimiento" del sistema operativo */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  .reveal,.stagger > *{opacity:1;transform:none;}
+}
 
 /* Título de sección reutilizable */
 .section{padding-block:var(--space-xl);}
@@ -88,22 +110,24 @@ ul{list-style:none;}
   font-size:.7rem;color:var(--color-accent);margin-bottom:var(--space-xs);text-align:center;
 }
 .section-title{font-size:clamp(1.8rem,6vw,2.6rem);text-align:center;margin-bottom:var(--space-sm);}
-.section-title .script{font-family:var(--font-script);color:var(--color-primary);font-size:1.4em;font-weight:400;}
+.section-title .script{font-family:var(--font-script);color:var(--color-primary-dark);font-size:1.4em;font-weight:400;}
 .section-lead{max-width:52ch;margin-inline:auto;text-align:center;color:var(--color-text-muted);margin-bottom:var(--space-lg);}
 .divider{width:64px;height:2px;background:var(--color-primary);margin:var(--space-sm) auto var(--space-lg);border-radius:2px;}
 
-/* Botones */
+/* Botones — min-height 44px (touch-target-size) */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-  padding:.9rem 2rem;border-radius:999px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;
+  min-height:44px;padding:.9rem 2rem;border-radius:999px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;
   font-weight:500;transition:transform var(--transition),box-shadow var(--transition),background var(--transition);
   white-space:nowrap;
 }
-.btn-primary{background:var(--color-primary);color:var(--color-on-primary);box-shadow:var(--shadow-soft);}
-.btn-primary:hover{background:var(--color-primary-dark);transform:translateY(-2px);}
-.btn-outline{background:transparent;border:1.5px solid var(--color-primary);color:var(--color-primary-dark);}
-.btn-outline:hover{background:var(--color-primary);color:var(--color-on-primary);}
-.btn-small{padding:.55rem 1.1rem;font-size:.72rem;}
+/* Fondo en --color-primary-dark (no --color-primary): con texto blanco da 6.2:1 de
+   contraste, el dorado claro solo daba 2.9:1 y no pasa WCAG AA (mínimo 4.5:1). */
+.btn-primary{background:var(--color-primary-dark);color:var(--color-on-primary);box-shadow:var(--shadow-soft);}
+.btn-primary:hover{background:#63481f;transform:translateY(-2px);}
+.btn-outline{background:transparent;border:1.5px solid var(--color-primary-dark);color:var(--color-primary-dark);}
+.btn-outline:hover{background:var(--color-primary-dark);color:var(--color-on-primary);}
+.btn-small{padding:.55rem 1.1rem;font-size:.72rem;min-height:40px;}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
 
 /* Placeholder de fotos — reemplazar cada .ph-photo por una <img> real */
@@ -134,7 +158,9 @@ ul{list-style:none;}
    ============================================================================ */
 #intro-overlay{
   position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  /* Radial dorado + un toque de rosa cálido (paleta wedding de la skill: "Soft Pink + Gold + Cream") */
   background:
+    radial-gradient(circle at 50% 15%, rgba(232,196,184,.35), transparent 55%),
     radial-gradient(circle at 50% 20%, rgba(184,147,90,.25), transparent 60%),
     linear-gradient(160deg,var(--color-bg) 0%,var(--color-bg-alt) 100%);
   transition:opacity .9s ease,visibility .9s ease;
@@ -152,12 +178,12 @@ ul{list-style:none;}
 }
 .intro-label{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--space-sm);}
 .intro-names{font-family:var(--font-script);font-size:clamp(2.8rem,14vw,4.5rem);font-weight:400;color:var(--color-primary-dark);line-height:1;}
-.intro-names .amp{display:block;font-size:.5em;color:var(--color-primary);margin-block:.15em;}
+.intro-names .amp{display:block;font-size:.5em;color:var(--color-primary-dark);margin-block:.15em;}
 .intro-phrase{font-family:var(--font-heading);font-size:clamp(1.1rem,4vw,1.4rem);margin-top:var(--space-sm);letter-spacing:.04em;}
 .intro-date{margin-top:var(--space-xs);font-size:.85rem;letter-spacing:.15em;color:var(--color-text-muted);}
 .btn-envelope{
-  margin-top:var(--space-lg);display:inline-flex;align-items:center;gap:.6rem;
-  padding:.9rem 1.8rem;border-radius:999px;background:var(--color-primary);color:#fff;
+  margin-top:var(--space-lg);display:inline-flex;align-items:center;gap:.6rem;min-height:44px;
+  padding:.9rem 1.8rem;border-radius:999px;background:var(--color-primary-dark);color:#fff;
   font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;box-shadow:var(--shadow-soft);
   animation:envelope-pulse 2.4s ease-in-out infinite;
 }
@@ -193,9 +219,14 @@ ul{list-style:none;}
 .slider{position:relative;width:100%;max-width:var(--container-w);margin-inline:auto;aspect-ratio:4/5;overflow:hidden;border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;}
 .slide.active{opacity:1;}
-.slider-dots{position:absolute;bottom:var(--space-sm);left:0;right:0;display:flex;justify-content:center;gap:.5rem;}
-.slider-dots button{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.8);}
-.slider-dots button.active{background:#fff;transform:scale(1.3);}
+.slider-dots{position:absolute;bottom:var(--space-sm);left:0;right:0;display:flex;justify-content:center;gap:.25rem;}
+/* El punto visible es de 8px, pero el botón tiene 32px de área táctil real (::before invisible) */
+.slider-dots button{position:relative;width:32px;height:32px;background:none;border:none;}
+.slider-dots button::before{
+  content:"";position:absolute;inset:0;margin:auto;width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.8);transition:transform var(--transition),background var(--transition);
+}
+.slider-dots button.active::before{background:#fff;transform:scale(1.3);}
 
 /* ============================================================================
    6. TEXTO INTRODUCTORIO
@@ -225,11 +256,11 @@ ul{list-style:none;}
   border:1px solid var(--color-border);
 }
 .event-date-badge{
-  flex:none;width:64px;text-align:center;background:var(--color-primary);color:#fff;border-radius:var(--radius-sm);
+  flex:none;width:64px;text-align:center;background:var(--color-primary-dark);color:#fff;border-radius:var(--radius-sm);
   padding:.6rem .3rem;
 }
 .event-date-badge strong{display:block;font-family:var(--font-heading);font-size:1.5rem;line-height:1;}
-.event-date-badge span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;}
+.event-date-badge span{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;}
 .event-info h3{font-size:1.25rem;margin-bottom:.15rem;}
 .event-info .event-time{font-size:.8rem;color:var(--color-accent);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem;}
 .event-info .event-address{font-size:.85rem;color:var(--color-text-muted);margin-bottom:.75rem;}
@@ -242,7 +273,7 @@ ul{list-style:none;}
   border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-lg) var(--space-md);
   box-shadow:var(--shadow-soft);
 }
-.dresscode-box svg{width:36px;height:36px;color:var(--color-primary);margin-inline:auto;margin-bottom:var(--space-xs);}
+.dresscode-box svg{width:36px;height:36px;color:var(--color-primary-dark);margin-inline:auto;margin-bottom:var(--space-xs);}
 .dresscode-box h3{font-size:1.4rem;margin-bottom:.5rem;}
 .dresscode-box p{color:var(--color-text-muted);font-size:.92rem;}
 .dresscode-note{margin-top:var(--space-xs);font-size:.78rem;color:var(--color-accent);font-style:italic;}
@@ -257,7 +288,7 @@ ul{list-style:none;}
 }
 .story-text p{color:var(--color-text-muted);margin-bottom:var(--space-sm);}
 .story-milestones{display:grid;gap:var(--space-sm);margin-top:var(--space-md);grid-template-columns:repeat(3,1fr);text-align:center;}
-.story-milestones .milestone strong{display:block;font-family:var(--font-heading);color:var(--color-primary);font-size:1.05rem;}
+.story-milestones .milestone strong{display:block;font-family:var(--font-heading);color:var(--color-primary-dark);font-size:1.05rem;}
 .story-milestones .milestone span{font-size:.7rem;color:var(--color-text-muted);}
 
 /* ============================================================================
@@ -294,13 +325,14 @@ ul{list-style:none;}
 }
 .gift-bank-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);padding-block:.6rem;border-bottom:1px dashed var(--color-border);}
 .gift-bank-row:last-child{border-bottom:none;}
-.gift-bank-row .label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-muted);}
+.gift-bank-row .label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-muted);}
 .gift-bank-row .value{font-family:var(--font-heading);font-size:1.05rem;color:var(--color-primary-dark);}
-.copy-btn{flex:none;width:36px;height:36px;border-radius:50%;background:var(--color-bg-alt);display:flex;align-items:center;justify-content:center;transition:background var(--transition);}
+/* 44x44 mínimo para touch-target-size (WCAG / Apple HIG) */
+.copy-btn{flex:none;width:44px;height:44px;border-radius:50%;background:var(--color-bg-alt);display:flex;align-items:center;justify-content:center;transition:background var(--transition);}
 .copy-btn svg{width:16px;height:16px;}
-.copy-btn.copied{background:var(--color-primary);color:#fff;}
+.copy-btn.copied{background:var(--color-primary-dark);color:#fff;}
 .gift-cash-note{display:flex;gap:.7rem;align-items:flex-start;font-size:.88rem;color:var(--color-text-muted);margin-bottom:var(--space-lg);}
-.gift-cash-note svg{flex:none;width:26px;height:26px;color:var(--color-primary);}
+.gift-cash-note svg{flex:none;width:26px;height:26px;color:var(--color-primary-dark);}
 .gift-ideas{display:grid;gap:var(--space-sm);grid-template-columns:1fr;}
 .gift-idea-card{
   background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);
@@ -316,7 +348,7 @@ ul{list-style:none;}
   text-align:center;font-size:.85rem;color:var(--color-accent);background:var(--color-bg-alt);
   border-radius:var(--radius-sm);padding:.7rem 1rem;max-width:420px;margin:0 auto var(--space-lg);
 }
-#rsvp-banner-closed{display:none;text-align:center;background:var(--color-primary);color:#fff;border-radius:var(--radius-sm);padding:1rem;max-width:480px;margin:0 auto var(--space-md);font-size:.88rem;}
+#rsvp-banner-closed{display:none;text-align:center;background:var(--color-primary-dark);color:#fff;border-radius:var(--radius-sm);padding:1rem;max-width:480px;margin:0 auto var(--space-md);font-size:.88rem;}
 .rsvp-form{max-width:480px;margin-inline:auto;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-lg) var(--space-md);box-shadow:var(--shadow-soft);}
 .field{margin-bottom:var(--space-md);}
 .field label{display:block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:.4rem;}
@@ -326,14 +358,22 @@ ul{list-style:none;}
 }
 .field textarea{resize:vertical;min-height:70px;}
 .radio-group{display:flex;gap:.75rem;}
-.radio-option{flex:1;border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:.7rem;text-align:center;font-size:.85rem;transition:border-color var(--transition),background var(--transition);}
-.radio-option input{display:none;}
-.radio-option.selected{border-color:var(--color-primary);background:var(--color-bg-alt);color:var(--color-primary-dark);font-weight:500;}
+.radio-option{
+  flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:.7rem;text-align:center;font-size:.85rem;
+  transition:border-color var(--transition),background var(--transition);
+}
+/* El <input> real sigue presente (accesible por teclado/lector de pantalla),
+   solo se oculta visualmente para dibujar la tarjeta como control. */
+.radio-option input{position:absolute;opacity:0;width:1px;height:1px;}
+.radio-option:has(input:focus-visible){outline:2px solid var(--color-primary-dark);outline-offset:2px;}
+.radio-option.selected{border-color:var(--color-primary-dark);background:var(--color-bg-alt);color:var(--color-primary-dark);font-weight:500;}
 #companions-field{transition:opacity var(--transition),max-height var(--transition);}
 #companions-field.hidden{display:none;}
 .rsvp-submit{width:100%;margin-top:var(--space-xs);}
-#rsvp-success,#rsvp-error{display:none;text-align:center;padding:var(--space-sm);border-radius:var(--radius-sm);font-size:.9rem;}
-#rsvp-success{background:var(--color-bg-alt);color:var(--color-primary-dark);}
+#rsvp-success,#rsvp-error{display:none;align-items:center;justify-content:center;gap:.5rem;text-align:center;padding:var(--space-sm);border-radius:var(--radius-sm);font-size:.9rem;}
+#rsvp-success{background:#EEF0E8;color:#4B5540;border:1px solid #D5DBC7;}
+#rsvp-success svg{flex:none;width:20px;height:20px;color:var(--color-sage);}
 #rsvp-error{background:#F6E3DE;color:#8A3B24;margin-top:var(--space-sm);}
 
 /* ============================================================================
@@ -341,8 +381,8 @@ ul{list-style:none;}
    ============================================================================ */
 #closing{text-align:center;padding-block:var(--space-xl);}
 .closing-quote{font-family:var(--font-heading);font-style:italic;font-size:clamp(1.2rem,4vw,1.6rem);max-width:44ch;margin-inline:auto;color:var(--color-primary-dark);}
-.closing-names{font-family:var(--font-script);font-size:2.4rem;color:var(--color-primary);margin-top:var(--space-md);}
-footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text-muted);letter-spacing:.05em;}
+.closing-names{font-family:var(--font-script);font-size:2.4rem;color:var(--color-primary-dark);margin-top:var(--space-md);}
+.credit{margin-top:var(--space-lg);font-size:.75rem;color:var(--color-text-muted);letter-spacing:.05em;}
 
 /* ============================================================================
    16. RESPONSIVE — TABLET / DESKTOP (mobile-first: la base de arriba es mobile)
@@ -372,7 +412,7 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
       <p class="intro-phrase">¡Nos Casamos!</p>
       <p class="intro-date">14 · 11 · 2026</p>
       <button id="open-invitation" class="btn-envelope" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg>
         Abrir invitación
       </button>
     </div>
@@ -387,9 +427,9 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
 <audio id="bg-music" loop preload="none">
   <source src="assets/musica.mp3" type="audio/mpeg">
 </audio>
-<button id="music-toggle" type="button" aria-label="Reproducir música">
-  <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-  <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+<button id="music-toggle" type="button" aria-label="Reproducir música" aria-pressed="false">
+  <svg class="icon-play" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+  <svg class="icon-pause" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
 </button>
 
 <!-- ============================================================================
@@ -406,21 +446,21 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
     <div class="slide active">
       <!-- [IMG: Foto 1 de portada — pareja mirándose] -->
       <div class="ph-photo cover" style="--ph-ratio:4/5">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
         <span>[IMG: Foto de portada 1]</span>
       </div>
     </div>
     <div class="slide">
       <!-- [IMG: Foto 2 de portada — pareja riendo] -->
       <div class="ph-photo cover" style="--ph-ratio:4/5">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
         <span>[IMG: Foto de portada 2]</span>
       </div>
     </div>
     <div class="slide">
       <!-- [IMG: Foto 3 de portada — lugar del evento] -->
       <div class="ph-photo cover" style="--ph-ratio:4/5">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
         <span>[IMG: Foto de portada 3]</span>
       </div>
     </div>
@@ -513,7 +553,7 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
 <section id="dresscode" class="section alt">
   <div class="container">
     <div class="dresscode-box reveal">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l3 3-3 2-3-2 3-3z"/><path d="M6 21l2-11 4-2 4 2 2 11z"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l3 3-3 2-3-2 3-3z"/><path d="M6 21l2-11 4-2 4 2 2 11z"/></svg>
       <h3>Código de vestimenta</h3>
       <p>Formal / Elegante sport. Nos encantaría verte con tus mejores galas para celebrar juntos.</p>
       <p class="dresscode-note">Sugerimos evitar el blanco y el color verde militar, reservados para la novia.</p>
@@ -534,7 +574,7 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
       <div class="reveal">
         <!-- [IMG: Foto de la pareja - momento significativo] -->
         <div class="ph-photo" style="--ph-ratio:1/1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
           <span>[IMG: Foto de la historia de la pareja]</span>
         </div>
       </div>
@@ -553,7 +593,9 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
 
 <!-- ============================================================================
      SECCIÓN 9: ÁLBUM DE FOTOS
-     Reemplazá cada .ph-photo por una <img src="tu-foto.jpg" alt="..."> real.
+     Reemplazá cada <button class="ph-photo"> por un <button class="ph-photo"><img ...></button>
+     con la foto real. Como estas fotos están debajo del pliegue (below the fold), agregá
+     loading="lazy" width height y alt descriptivo (las del hero, arriba, van con loading="eager").
      ============================================================================ -->
 <section id="gallery" class="section alt">
   <div class="container">
@@ -562,19 +604,20 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
     <div class="divider reveal"></div>
 
     <div class="gallery-grid stagger" id="gallery-grid">
-      <!-- Se repite este bloque por cada foto de la galería -->
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 1]"><span>[IMG: Foto 1]</span></div>
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 2]"><span>[IMG: Foto 2]</span></div>
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 3]"><span>[IMG: Foto 3]</span></div>
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 4]"><span>[IMG: Foto 4]</span></div>
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 5]"><span>[IMG: Foto 5]</span></div>
-      <div class="ph-photo" data-caption="[IMG: Foto de galería 6]"><span>[IMG: Foto 6]</span></div>
+      <!-- Se repite este bloque por cada foto de la galería.
+           Es un <button>, no un <div>, para que se pueda abrir con teclado (Tab + Enter). -->
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 1]" aria-label="Ampliar foto de galería 1"><span aria-hidden="true">[IMG: Foto 1]</span></button>
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 2]" aria-label="Ampliar foto de galería 2"><span aria-hidden="true">[IMG: Foto 2]</span></button>
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 3]" aria-label="Ampliar foto de galería 3"><span aria-hidden="true">[IMG: Foto 3]</span></button>
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 4]" aria-label="Ampliar foto de galería 4"><span aria-hidden="true">[IMG: Foto 4]</span></button>
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 5]" aria-label="Ampliar foto de galería 5"><span aria-hidden="true">[IMG: Foto 5]</span></button>
+      <button type="button" class="ph-photo" data-caption="[IMG: Foto de galería 6]" aria-label="Ampliar foto de galería 6"><span aria-hidden="true">[IMG: Foto 6]</span></button>
     </div>
   </div>
 </section>
 
 <!-- Lightbox de la galería -->
-<div id="lightbox">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
   <button id="lightbox-close" type="button" aria-label="Cerrar">×</button>
   <div class="ph-photo" id="lightbox-photo"><span id="lightbox-caption"></span></div>
 </div>
@@ -622,7 +665,7 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
       <div class="gift-bank-row">
         <div><p class="label">Alias</p><p class="value" id="bank-alias">MARTI.NICO.BODA</p></div>
         <button class="copy-btn" type="button" data-copy="MARTI.NICO.BODA" aria-label="Copiar alias">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
         </button>
       </div>
       <div class="gift-bank-row">
@@ -631,13 +674,13 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
       <div class="gift-bank-row">
         <div><p class="label">CBU / CVU</p><p class="value" style="font-size:.9rem">0000003100000000000000</p></div>
         <button class="copy-btn" type="button" data-copy="0000003100000000000000" aria-label="Copiar CBU">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
         </button>
       </div>
     </div>
 
     <div class="gift-cash-note reveal">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 7l9-4 9 4"/><path d="M12 12v4"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 7l9-4 9 4"/><path d="M12 12v4"/></svg>
       <p>Si preferís hacernos un regalo en efectivo, vamos a tener un buzón especial en el salón durante la fiesta.</p>
     </div>
 
@@ -710,8 +753,11 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
 
       <button type="submit" class="btn btn-primary rsvp-submit" id="rsvp-submit-btn">Confirmar asistencia</button>
 
-      <p id="rsvp-success">¡Gracias por confirmar! Ya anotamos tu respuesta. 💛</p>
-      <p id="rsvp-error">No pudimos enviar tu confirmación. Probá de nuevo o escribinos directamente.</p>
+      <p id="rsvp-success" role="status" aria-live="polite">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        ¡Gracias por confirmar! Ya anotamos tu respuesta.
+      </p>
+      <p id="rsvp-error" role="alert">No pudimos enviar tu confirmación. Probá de nuevo o escribinos directamente.</p>
     </form>
   </div>
 </section>
@@ -723,7 +769,7 @@ footer.credit{margin-top:var(--space-lg);font-size:.72rem;color:var(--color-text
   <div class="container reveal">
     <p class="closing-quote">"El amor es la única fuerza capaz de transformar un enemigo en amigo, y hoy, ese amor nos une a todos ustedes."</p>
     <p class="closing-names">Martina &amp; Nicolás</p>
-    <footer class="credit">Invitación digital hecha con ♥ · 2026</footer>
+    <p class="credit">Invitación digital hecha con cariño · 2026</p>
   </div>
 </footer>
 
@@ -793,11 +839,16 @@ function formatDateGCal(isoLocal){
 
   btn.addEventListener('click', () => {
     if (audio.paused){
-      audio.play().then(() => btn.classList.add('playing'))
-        .catch(() => console.warn('No se pudo reproducir la música. Verificá CONFIG.musicSrc.'));
+      audio.play().then(() => {
+        btn.classList.add('playing');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', 'Pausar música');
+      }).catch(() => console.warn('No se pudo reproducir la música. Verificá CONFIG.musicSrc.'));
     } else {
       audio.pause();
       btn.classList.remove('playing');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'Reproducir música');
     }
   });
 })();
@@ -833,7 +884,8 @@ function checkReveal(){
   slides.forEach((_, i) => {
     const dot = document.createElement('button');
     dot.type = 'button';
-    if (i === 0) dot.classList.add('active');
+    dot.setAttribute('aria-label', `Ir a la foto ${i + 1} de ${slides.length}`);
+    if (i === 0){ dot.classList.add('active'); dot.setAttribute('aria-current', 'true'); }
     dot.addEventListener('click', () => goTo(i));
     dotsWrap.appendChild(dot);
   });
@@ -842,9 +894,11 @@ function checkReveal(){
   function goTo(i){
     slides[current].classList.remove('active');
     dots[current].classList.remove('active');
+    dots[current].removeAttribute('aria-current');
     current = i;
     slides[current].classList.add('active');
     dots[current].classList.add('active');
+    dots[current].setAttribute('aria-current', 'true');
   }
 
   setInterval(() => goTo((current + 1) % slides.length), 4500);
@@ -921,17 +975,25 @@ function checkReveal(){
   const lightbox = document.getElementById('lightbox');
   const lightboxCaption = document.getElementById('lightbox-caption');
   const closeBtn = document.getElementById('lightbox-close');
+  let lastFocused = null;
 
   document.querySelectorAll('#gallery-grid .ph-photo').forEach(photo => {
     photo.addEventListener('click', () => {
+      lastFocused = photo; // para devolver el foco acá al cerrar
       lightboxCaption.textContent = photo.dataset.caption || '';
+      lightbox.hidden = false;
       lightbox.classList.add('open');
+      closeBtn.focus();
     });
   });
-  function close(){ lightbox.classList.remove('open'); }
+  function close(){
+    lightbox.classList.remove('open');
+    lightbox.hidden = true;
+    if (lastFocused) lastFocused.focus(); // devuelve el foco al disparador (accesibilidad de teclado)
+  }
   closeBtn.addEventListener('click', close);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('open')) close(); });
 })();
 
 /* ============================================================================
@@ -956,12 +1018,13 @@ function checkReveal(){
     Array.from(form.elements).forEach(el => el.disabled = true);
   }
 
-  // Selección visual de "Asisto / No asisto"
+  // Selección visual de "Asisto / No asisto".
+  // Se escucha "change" en cada <input type=radio> (no "click" en la tarjeta) para que
+  // funcione igual con mouse, touch y teclado (Tab + flechas/Espacio).
   radioOptions.forEach(option => {
-    option.addEventListener('click', () => {
+    option.querySelector('input').addEventListener('change', () => {
       radioOptions.forEach(o => o.classList.remove('selected'));
       option.classList.add('selected');
-      option.querySelector('input').checked = true;
       companionsField.classList.toggle('hidden', option.dataset.value === 'no');
     });
   });
@@ -1005,7 +1068,7 @@ function checkReveal(){
         console.log('RSVP simulado:', payload);
       }
       form.style.display = 'none';
-      successMsg.style.display = 'block';
+      successMsg.style.display = 'flex';
     } catch (err){
       errorMsg.style.display = 'block';
       submitBtn.disabled = false;
