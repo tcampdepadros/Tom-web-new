@@ -113,14 +113,26 @@ textarea:focus-visible,[tabindex]:focus-visible{
 .section-title .script{font-family:var(--font-script);color:var(--color-primary-dark);font-size:1.4em;font-weight:400;}
 .section-lead{max-width:52ch;margin-inline:auto;text-align:center;color:var(--color-text-muted);margin-bottom:var(--space-lg);}
 .divider{width:64px;height:2px;background:var(--color-primary);margin:var(--space-sm) auto var(--space-lg);border-radius:2px;}
+/* El separador se "dibuja" de 0 a 64px en vez de solo aparecer */
+.divider.reveal{width:0;transition:width .9s cubic-bezier(.16,1,.3,1) .15s,opacity .9s ease,filter .9s ease;}
+.divider.reveal.is-visible{width:64px;}
 
 /* Botones — min-height 44px (touch-target-size) */
 .btn{
+  position:relative;overflow:hidden;
   display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
   min-height:44px;padding:.9rem 2rem;border-radius:999px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;
   font-weight:500;transition:transform var(--transition),box-shadow var(--transition),background var(--transition);
   white-space:nowrap;
 }
+/* Brillo diagonal que recorre el botón al pasar el mouse (no depende de hover en touch,
+   así que la acción principal nunca depende de este efecto — ver ux "hover-vs-tap") */
+.btn::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);
+  transform:translateX(-120%);
+}
+.btn:hover::after{transform:translateX(120%);transition:transform .7s ease;}
 /* Fondo en --color-primary-dark (no --color-primary): con texto blanco da 6.2:1 de
    contraste, el dorado claro solo daba 2.9:1 y no pasa WCAG AA (mínimo 4.5:1). */
 .btn-primary{background:var(--color-primary-dark);color:var(--color-on-primary);box-shadow:var(--shadow-soft);}
@@ -141,17 +153,68 @@ textarea:focus-visible,[tabindex]:focus-visible{
 .ph-photo span{font-size:.72rem;max-width:22ch;line-height:1.4;}
 .ph-photo.cover{width:100%;height:100%;border-radius:0;}
 
-/* Animaciones de aparición al hacer scroll */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
-.reveal.is-visible{opacity:1;transform:none;}
-.stagger.is-visible > *{opacity:1;transform:none;}
-.stagger > *{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;}
+/* Animaciones de aparición al hacer scroll.
+   Easing "expo-out" (desacelera fuerte al final) + un leve desenfoque que se
+   enfoca: da una sensación más cinematográfica que un simple fade lineal. */
+.reveal{
+  opacity:0;transform:translateY(34px) scale(.98);filter:blur(6px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),filter .9s ease;
+}
+.reveal.is-visible{opacity:1;transform:none;filter:blur(0);}
+.stagger.is-visible > *{opacity:1;transform:none;filter:blur(0);}
+.stagger > *{
+  opacity:0;transform:translateY(26px) scale(.98);filter:blur(4px);
+  transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),filter .8s ease;
+}
 .stagger > *:nth-child(1){transition-delay:.05s;}
 .stagger > *:nth-child(2){transition-delay:.15s;}
 .stagger > *:nth-child(3){transition-delay:.25s;}
 .stagger > *:nth-child(4){transition-delay:.35s;}
 .stagger > *:nth-child(5){transition-delay:.45s;}
 .stagger > *:nth-child(6){transition-delay:.55s;}
+
+/* Barra fina de progreso de lectura (fixed top). El ancho lo actualiza el JS
+   con --scroll-progress; acá solo se dibuja y se anima el cambio de escala. */
+#scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:70;transform-origin:left center;
+  transform:scaleX(var(--scroll-progress, 0));
+  background:linear-gradient(90deg,var(--color-accent),var(--color-primary),var(--color-primary-dark));
+  transition:transform .1s linear;
+}
+
+/* Pétalos dorados ambientales — decorativos, se desactivan con reduced-motion */
+.petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;}
+.petal{
+  position:absolute;bottom:-8%;left:calc(var(--i) * 12.5% + 4%);
+  width:10px;height:14px;border-radius:60% 0 60% 0;
+  background:linear-gradient(160deg,var(--color-primary),var(--color-accent));
+  opacity:0;
+  animation:petal-drift calc(11s + var(--i) * 1.7s) ease-in calc(var(--i) * -1.4s) infinite;
+}
+.petal:nth-child(even){width:8px;height:11px;background:linear-gradient(160deg,#EFD9B8,var(--color-primary));}
+@keyframes petal-drift{
+  0%   {transform:translate(0,0) rotate(0deg);opacity:0;}
+  8%   {opacity:.55;}
+  50%  {transform:translate(18px,-58vh) rotate(190deg);}
+  92%  {opacity:.35;}
+  100% {transform:translate(-12px,-108vh) rotate(320deg);opacity:0;}
+}
+@media (prefers-reduced-motion: reduce){ .petals{display:none;} }
+
+/* Ráfaga de pétalos al tocar "Abrir invitación" — un pequeño momento de deleite,
+   se generan por JS y se autodestruyen al terminar la animación. */
+.petal-burst{
+  position:fixed;width:8px;height:11px;border-radius:60% 0 60% 0;pointer-events:none;z-index:110;
+  background:linear-gradient(160deg,var(--color-primary),var(--color-accent));
+  animation:petal-burst-fly .9s cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes petal-burst-fly{
+  to{
+    transform:translate(var(--burst-x),var(--burst-y)) rotate(var(--burst-r));
+    opacity:0;
+  }
+}
+@media (prefers-reduced-motion: reduce){ .petal-burst{display:none;} }
 
 /* ============================================================================
    3. PORTADA ANIMADA (INTRO)
@@ -167,25 +230,41 @@ textarea:focus-visible,[tabindex]:focus-visible{
 }
 #intro-overlay.opening .intro-content{transform:scale(.94);opacity:0;transition:transform .7s ease,opacity .7s ease;}
 #intro-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;}
-.intro-content{
-  text-align:center;padding:var(--space-lg) var(--space-md);
-  animation:intro-fade-in 1.4s ease both;
-}
-@keyframes intro-fade-in{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.intro-content{position:relative;z-index:2;text-align:center;padding:var(--space-lg) var(--space-md);}
 .intro-frame{
-  border:1px solid var(--color-primary);outline:1px solid var(--color-primary);outline-offset:8px;
+  position:relative;border:1px solid var(--color-primary);outline:1px solid var(--color-primary);outline-offset:8px;
   padding:var(--space-lg) var(--space-md);border-radius:var(--radius-md);
+  animation:frame-glow 3.6s ease-in-out infinite;
 }
-.intro-label{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--space-sm);}
-.intro-names{font-family:var(--font-script);font-size:clamp(2.8rem,14vw,4.5rem);font-weight:400;color:var(--color-primary-dark);line-height:1;}
+@keyframes frame-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(184,147,90,0);}
+  50%{box-shadow:0 0 26px 2px rgba(184,147,90,.22);}
+}
+/* Cada línea de la portada entra en cascada (misma animación, retraso creciente) */
+@keyframes intro-rise{from{opacity:0;transform:translateY(18px);filter:blur(4px);}to{opacity:1;transform:none;filter:blur(0);}}
+.intro-label,.intro-names,.intro-phrase,.intro-date,.btn-envelope{
+  opacity:0;animation:intro-rise .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+.intro-label{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--space-sm);animation-delay:.15s;}
+.intro-names{font-family:var(--font-script);font-size:clamp(2.8rem,14vw,4.5rem);font-weight:400;color:var(--color-primary-dark);line-height:1;animation-delay:.4s;}
 .intro-names .amp{display:block;font-size:.5em;color:var(--color-primary-dark);margin-block:.15em;}
-.intro-phrase{font-family:var(--font-heading);font-size:clamp(1.1rem,4vw,1.4rem);margin-top:var(--space-sm);letter-spacing:.04em;}
-.intro-date{margin-top:var(--space-xs);font-size:.85rem;letter-spacing:.15em;color:var(--color-text-muted);}
+.intro-phrase{font-family:var(--font-heading);font-size:clamp(1.1rem,4vw,1.4rem);margin-top:var(--space-sm);letter-spacing:.04em;animation-delay:.75s;}
+.intro-date{margin-top:var(--space-xs);font-size:.85rem;letter-spacing:.15em;color:var(--color-text-muted);animation-delay:.95s;}
 .btn-envelope{
   margin-top:var(--space-lg);display:inline-flex;align-items:center;gap:.6rem;min-height:44px;
   padding:.9rem 1.8rem;border-radius:999px;background:var(--color-primary-dark);color:#fff;
   font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;box-shadow:var(--shadow-soft);
-  animation:envelope-pulse 2.4s ease-in-out infinite;
+  /* la entrada (intro-rise) y el rebote (envelope-pulse) son dos animaciones distintas
+     corriendo a la vez: una sola vez para aparecer, la otra en loop para invitar al toque */
+  animation-name:intro-rise,envelope-pulse;
+  animation-duration:.9s,2.4s;
+  animation-timing-function:cubic-bezier(.16,1,.3,1),ease-in-out;
+  animation-delay:1.2s,2.1s;
+  /* 2 rebotes (4.8s) y se detiene: un loop infinito violaría WCAG 2.2.2
+     (contenido en movimiento de más de 5s necesita poder pausarse) y además
+     nunca deja el botón "quieto" para quien navega con lector de pantalla/switch. */
+  animation-iteration-count:1,2;
+  animation-fill-mode:forwards,forwards;
 }
 @keyframes envelope-pulse{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 .btn-envelope svg{width:18px;height:18px;}
@@ -216,9 +295,16 @@ textarea:focus-visible,[tabindex]:focus-visible{
 .hero-names{font-family:var(--font-script);font-size:clamp(2.6rem,11vw,4rem);color:var(--color-primary-dark);margin-top:var(--space-xs);}
 .hero-welcome{max-width:46ch;margin:var(--space-sm) auto 0;color:var(--color-text-muted);}
 
+/* El JS mueve esto directamente (sin transition) para que el desplazamiento
+   quede 1:1 con el scroll, como corresponde a un parallax. */
+.hero-parallax{will-change:transform;}
 .slider{position:relative;width:100%;max-width:var(--container-w);margin-inline:auto;aspect-ratio:4/5;overflow:hidden;border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;}
 .slide.active{opacity:1;}
+/* Efecto Ken Burns: zoom + paneo lento mientras la foto está activa */
+.slide .ph-photo{transform:scale(1.001);}
+.slide.active .ph-photo{animation:ken-burns 6.5s ease-out forwards;}
+@keyframes ken-burns{from{transform:scale(1.06) translate(0,0);}to{transform:scale(1.16) translate(-1.5%,-1.5%);}}
 .slider-dots{position:absolute;bottom:var(--space-sm);left:0;right:0;display:flex;justify-content:center;gap:.25rem;}
 /* El punto visible es de 8px, pero el botón tiene 32px de área táctil real (::before invisible) */
 .slider-dots button{position:relative;width:32px;height:32px;background:none;border:none;}
@@ -243,6 +329,9 @@ textarea:focus-visible,[tabindex]:focus-visible{
   min-width:74px;padding:var(--space-sm) .5rem;text-align:center;box-shadow:var(--shadow-soft);
 }
 .countdown .unit strong{display:block;font-family:var(--font-heading);font-size:1.9rem;color:var(--color-primary-dark);}
+/* Pulso breve cada vez que un dígito cambia (lo dispara el JS agregando/sacando la clase) */
+.countdown .unit strong.tick{animation:digit-tick .4s ease;}
+@keyframes digit-tick{0%{transform:translateY(0);opacity:1;}35%{transform:translateY(-6px);opacity:.5;}70%{transform:translateY(2px);}100%{transform:translateY(0);opacity:1;}}
 .countdown .unit span{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-text-muted);}
 .countdown-actions{display:flex;justify-content:center;}
 
@@ -295,7 +384,14 @@ textarea:focus-visible,[tabindex]:focus-visible{
    11. ÁLBUM DE FOTOS
    ============================================================================ */
 .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;}
-.gallery-grid .ph-photo{cursor:zoom-in;--ph-ratio:1/1;}
+.gallery-grid .ph-photo{
+  cursor:zoom-in;--ph-ratio:1/1;width:100%;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease;
+}
+.gallery-grid .ph-photo:hover,.gallery-grid .ph-photo:focus-visible{
+  transform:scale(1.045) rotate(-.6deg);box-shadow:var(--shadow-soft);z-index:1;
+}
+.gallery-grid .ph-photo:active{transform:scale(.97);}
 #lightbox{
   position:fixed;inset:0;z-index:90;background:rgba(59,47,38,.92);display:none;
   align-items:center;justify-content:center;padding:var(--space-md);
@@ -400,11 +496,23 @@ textarea:focus-visible,[tabindex]:focus-visible{
 </head>
 <body>
 
+<!-- Barra fina de progreso de lectura, se llena a medida que se scrollea la página -->
+<div id="scroll-progress" aria-hidden="true"></div>
+
 <!-- ============================================================================
      SECCIÓN 1: PORTADA ANIMADA (INTRO)
      Pantalla de bienvenida a pantalla completa. Se oculta al tocar el botón.
      ============================================================================ -->
 <div id="intro-overlay">
+  <!-- Pétalos dorados flotando de fondo (puramente decorativo, CSS-only, se
+       desactivan solos con prefers-reduced-motion). El número/posición de cada
+       uno se define con --i para variar duración/retraso sin repetir CSS. -->
+  <div class="petals" aria-hidden="true">
+    <span class="petal" style="--i:0"></span><span class="petal" style="--i:1"></span>
+    <span class="petal" style="--i:2"></span><span class="petal" style="--i:3"></span>
+    <span class="petal" style="--i:4"></span><span class="petal" style="--i:5"></span>
+    <span class="petal" style="--i:6"></span><span class="petal" style="--i:7"></span>
+  </div>
   <div class="intro-content">
     <div class="intro-frame">
       <p class="intro-label">Con mucha alegría les contamos que</p>
@@ -436,12 +544,20 @@ textarea:focus-visible,[tabindex]:focus-visible{
      SECCIÓN 3: HERO PRINCIPAL — nombres + slider de fotos de portada
      ============================================================================ -->
 <section id="hero">
+  <div class="petals" aria-hidden="true">
+    <span class="petal" style="--i:1"></span><span class="petal" style="--i:3"></span>
+    <span class="petal" style="--i:5"></span><span class="petal" style="--i:7"></span>
+  </div>
   <div class="hero-heading reveal">
     <span class="hero-eyebrow">Nuestra boda</span>
     <h1 class="hero-names">Martina &amp; Nicolás</h1>
     <p class="hero-welcome">Nos encantaría que nos acompañes en el día más importante de nuestras vidas.</p>
   </div>
 
+  <!-- Envoltorio dedicado solo al parallax de scroll (el JS le mueve el transform
+       directamente); el slider de adentro maneja su propia animación de "reveal"
+       para que las dos transformaciones no compitan por la misma propiedad. -->
+  <div class="hero-parallax" id="hero-parallax">
   <div class="slider reveal" id="hero-slider">
     <div class="slide active">
       <!-- [IMG: Foto 1 de portada — pareja mirándose] -->
@@ -466,6 +582,7 @@ textarea:focus-visible,[tabindex]:focus-visible{
     </div>
     <div class="slider-dots"></div>
   </div>
+  </div><!-- /.hero-parallax -->
 </section>
 
 <!-- ============================================================================
@@ -802,6 +919,8 @@ const CONFIG = {
    UTILIDADES
    ============================================================================ */
 function pad(n){ return String(n).padStart(2,'0'); }
+const prefersReducedMotion = () =>
+  window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function formatDateGCal(isoLocal){
   // Convierte "2026-11-14T18:00:00" a formato UTC compacto "20261114T180000Z"
@@ -820,6 +939,7 @@ function formatDateGCal(isoLocal){
   document.documentElement.classList.add('no-scroll');
 
   openBtn.addEventListener('click', () => {
+    spawnPetalBurst(openBtn);
     overlay.classList.add('opening');
     setTimeout(() => {
       overlay.classList.add('hidden');
@@ -828,6 +948,31 @@ function formatDateGCal(isoLocal){
     }, 700);
   });
 })();
+
+/* Pequeña ráfaga de pétalos que "explota" desde el botón al abrir la invitación.
+   Es puramente decorativo: se salta directamente con prefers-reduced-motion. */
+function spawnPetalBurst(originEl){
+  if (prefersReducedMotion()) return;
+  const rect = originEl.getBoundingClientRect();
+  const originX = rect.left + rect.width / 2;
+  const originY = rect.top + rect.height / 2;
+  const count = 14;
+  for (let i = 0; i < count; i++){
+    const petal = document.createElement('span');
+    petal.className = 'petal-burst';
+    const angle = (Math.PI * 2 * i) / count;
+    const distance = 70 + (i % 3) * 30;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance - 40; // sesgo hacia arriba
+    petal.style.left = originX + 'px';
+    petal.style.top = originY + 'px';
+    petal.style.setProperty('--burst-x', x + 'px');
+    petal.style.setProperty('--burst-y', y + 'px');
+    petal.style.setProperty('--burst-r', ((i * 53) % 360) + 'deg');
+    document.body.appendChild(petal);
+    petal.addEventListener('animationend', () => petal.remove());
+  }
+}
 
 /* ============================================================================
    2) REPRODUCTOR DE MÚSICA
@@ -905,6 +1050,50 @@ function checkReveal(){
 })();
 
 /* ============================================================================
+   4b) BARRA DE PROGRESO DE SCROLL
+   ============================================================================ */
+(function initScrollProgress(){
+  const root = document.documentElement;
+  let ticking = false;
+  function update(){
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    root.style.setProperty('--scroll-progress', ratio.toFixed(4));
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
+
+/* ============================================================================
+   4c) PARALLAX SUAVE EN LA FOTO DEL HERO
+   Desplaza el slider un poco más lento que el scroll mientras está cerca del
+   centro de la pantalla. Va en un <div> aparte (#hero-parallax) para no pisar
+   la transición de "reveal" ni la animación Ken Burns, que ya usan transform.
+   ============================================================================ */
+(function initHeroParallax(){
+  if (prefersReducedMotion()) return;
+  const wrap = document.getElementById('hero-parallax');
+  if (!wrap) return;
+  let ticking = false;
+  function update(){
+    const rect = wrap.getBoundingClientRect();
+    const viewportCenter = window.innerHeight / 2;
+    const distanceFromCenter = (rect.top + rect.height / 2) - viewportCenter;
+    // Desplazamiento acotado a ±18px para que sea sutil, no un efecto mareante
+    const offset = Math.max(-1, Math.min(1, distanceFromCenter / window.innerHeight)) * -18;
+    wrap.style.transform = `translateY(${offset}px)`;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
+
+/* ============================================================================
    5) COUNTDOWN + LINK DE GOOGLE CALENDAR
    ============================================================================ */
 (function initCountdown(){
@@ -916,20 +1105,29 @@ function checkReveal(){
     sec: document.getElementById('cd-sec'),
   };
 
+  // Actualiza un contador solo si el valor cambió, y le agrega un pulso breve
+  // (evita reflow/animación innecesaria en los 3 dígitos que no cambiaron).
+  function setUnit(el, value){
+    const text = pad(value);
+    if (el.textContent === text) return;
+    el.textContent = text;
+    if (!prefersReducedMotion()){
+      el.classList.remove('tick');
+      void el.offsetWidth; // fuerza reflow para poder reiniciar la animación
+      el.classList.add('tick');
+    }
+  }
+
   function tick(){
     const diff = target - Date.now();
     if (diff <= 0){
-      els.days.textContent = els.hours.textContent = els.min.textContent = els.sec.textContent = '00';
+      setUnit(els.days, 0); setUnit(els.hours, 0); setUnit(els.min, 0); setUnit(els.sec, 0);
       return;
     }
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const min = Math.floor((diff % 3600000) / 60000);
-    const sec = Math.floor((diff % 60000) / 1000);
-    els.days.textContent = pad(days);
-    els.hours.textContent = pad(hours);
-    els.min.textContent = pad(min);
-    els.sec.textContent = pad(sec);
+    setUnit(els.days, Math.floor(diff / 86400000));
+    setUnit(els.hours, Math.floor((diff % 86400000) / 3600000));
+    setUnit(els.min, Math.floor((diff % 3600000) / 60000));
+    setUnit(els.sec, Math.floor((diff % 60000) / 1000));
   }
   tick();
   setInterval(tick, 1000);
